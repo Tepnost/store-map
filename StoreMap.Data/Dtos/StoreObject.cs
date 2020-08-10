@@ -10,6 +10,6 @@ namespace StoreMap.Data.Dtos
 
         public abstract string GetShapeStyles { get; }
 
-        public abstract void UpdateSize(int currentX, int currentY);
+        public abstract void UpdateSize(int currentX, int currentY, RectPosition boundaries = null);
     }
 }

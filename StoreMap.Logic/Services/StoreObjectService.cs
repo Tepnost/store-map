@@ -28,7 +28,7 @@ namespace StoreMap.Logic.Services
                 new StoreObjectCircle
                 {
                     X = 300, Y = 100,
-                    Radius = 40
+                    Diameter = 40
                 }
             };
         }

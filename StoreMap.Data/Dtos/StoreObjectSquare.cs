@@ -11,7 +11,7 @@ namespace StoreMap.Data.Dtos
 
         public override string GetShapeStyles => $"width: {Width}px; height: {Height}px;";
         
-        public override void UpdateSize(int currentX, int currentY)
+        public override void UpdateSize(int currentX, int currentY, RectPosition boundaries = null)
         {
             SetX(currentX);
             SetY(currentY);
