@@ -1,0 +1,18 @@
+@using StoreMap.Data.Dtos
+
+<div class="@shapeClassName">
+</div>
+
+<Styled @bind-Classname="@shapeClassName">
+    position: absolute;
+    left: @(Data.X + "px");
+    top: @(Data.Y + "px");
+    background: @Data.Color;
+    @Data.GetShapeStyles
+</Styled>
+
+@code {
+    private string shapeClassName { get; set; }
+        
+    [Parameter] public StoreObject Data { get; set; }
+}

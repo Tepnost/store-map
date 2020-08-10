@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap", "StoreMap\StoreMap.csproj", "{CAADF2B1-2CCF-436F-B690-1FDEE1DD6484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Data", "StoreMap.Data\StoreMap.Data.csproj", "{79617516-6E89-40D5-8146-20E2D1A30AFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Logic", "StoreMap.Logic\StoreMap.Logic.csproj", "{0782F90C-3116-492B-86D7-87DF1DCBCBA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAADF2B1-2CCF-436F-B690-1FDEE1DD6484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAADF2B1-2CCF-436F-B690-1FDEE1DD6484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAADF2B1-2CCF-436F-B690-1FDEE1DD6484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAADF2B1-2CCF-436F-B690-1FDEE1DD6484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79617516-6E89-40D5-8146-20E2D1A30AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79617516-6E89-40D5-8146-20E2D1A30AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79617516-6E89-40D5-8146-20E2D1A30AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79617516-6E89-40D5-8146-20E2D1A30AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0782F90C-3116-492B-86D7-87DF1DCBCBA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0782F90C-3116-492B-86D7-87DF1DCBCBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0782F90C-3116-492B-86D7-87DF1DCBCBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0782F90C-3116-492B-86D7-87DF1DCBCBA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

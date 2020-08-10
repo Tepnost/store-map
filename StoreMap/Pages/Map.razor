@@ -1,0 +1,69 @@
+@page "/map"
+@using StoreMap.Data.Dtos
+@using StoreMap.Logic.ServiceContracts
+@using System
+@inject IStoreObjectService storeObjectService
+@inject IBrowserService browserService
+
+<div id="map-drawing" class="map" @onclick="StartDraw" @onmousemove="UpdateDrawingShape">
+    @foreach (var obj in storeObjects)
+    {
+        <StoreShape Data="@obj" @key="@obj"></StoreShape>
+    }
+    
+    @if (drawShape != null)
+    {
+        <StoreShape Data="@drawShape"></StoreShape>
+    }
+</div>
+
+<style>
+.map {
+    border: 1px solid black;
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    cursor: crosshair;
+}
+</style>
+
+@code {
+    private List<StoreObject> storeObjects = new List<StoreObject>();
+    private StoreObject drawShape;
+    private RectPosition mapPosition;
+
+    protected override void OnInitialized()
+    {
+        storeObjects = storeObjectService.GetStoreObjects();
+    }
+
+    private async Task StartDraw(MouseEventArgs e)
+    {
+        if (drawShape != null)
+        {
+            storeObjects.Add(drawShape);
+            drawShape = null;
+            return;
+        }
+        
+        mapPosition = await browserService.GetElementPosition("map-drawing");
+        drawShape = new StoreObjectSquare
+        {
+            X = (int)e.ClientX - mapPosition.Left,
+            Y = (int)e.ClientY - mapPosition.Top
+        };
+        Console.WriteLine($"Starting drawing: {drawShape.X}:{drawShape.Y}");
+    }
+
+    private void UpdateDrawingShape(MouseEventArgs e)
+    {
+        if (drawShape == null)
+        {
+            return;
+        }
+        
+        drawShape.UpdateSize((int)e.ClientX - mapPosition.Left, (int)e.ClientY - mapPosition.Top);
+        var a = (StoreObjectSquare) drawShape;
+        Console.WriteLine($"Updating drawing: {a.Width}:{a.Height}");
+    }
+}
