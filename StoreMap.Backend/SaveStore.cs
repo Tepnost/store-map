@@ -1,31 +1,31 @@
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-using Newtonsoft.Json;
-using StoreMap.Backend.Data.Entities;
+using StoreMap.Backend.Data.Interfaces;
 
 namespace StoreMap.Backend
 {
-    public static class SaveStore
+    public class SaveStore
     {
+        private readonly IStoreRepository storeRepository;
+
+        public SaveStore(IStoreRepository storeRepository)
+        {
+            this.storeRepository = storeRepository;
+        }
+
         [FunctionName("SaveStore")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            var client = new MongoClient(System.Environment.GetEnvironmentVariable("MongoDBConnectionString"));
-            var database = client.GetDatabase("store_map");
-            var stores = await database.GetCollection<Store>("stores").FindAsync(x => true);
-            
             string name = req.Query["name"];
-            stores.ToList().ForEach(x => name = x.Name);
-
-
+            var stores = await storeRepository.GetAllStores();
+            stores.ForEach(x => name = x.Name);
+            
             // string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             // dynamic data = JsonConvert.DeserializeObject(requestBody);
             // name ??= data?.name;
