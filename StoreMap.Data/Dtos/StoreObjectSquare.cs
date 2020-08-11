@@ -8,6 +8,8 @@ namespace StoreMap.Data.Dtos
         public int Height { get; set; }
         private bool isInversedX;
         private bool isInversedY;
+        private int MaxX => X + Width;
+        private int MaxY => Y + Height;
 
         public override string GetShapeStyles => $"width: {Width}px; height: {Height}px;";
         
@@ -67,6 +69,12 @@ namespace StoreMap.Data.Dtos
                     Height = h;
                 }
             }
+        }
+
+        public override bool IsInside(int targetX, int targetY)
+        {
+            return targetX >= X && targetX <= MaxX &&
+                   targetY >= Y && targetY <= MaxY;
         }
     }
 }

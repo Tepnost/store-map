@@ -1,20 +1,24 @@
 @page "/map"
 @using StoreMap.Data.Dtos
 @using StoreMap.Logic.ServiceContracts
-@using System
 @using StoreMap.Data.Enums
 @using StoreMap.Data.Factory
+@using StoreMap.Extensions
 @inject IStoreObjectService storeObjectService
 @inject IBrowserService browserService
 
 <div class="map-edit-controls">
-    <RadioGroup @bind-Value="shapeType" size="large">
+    <RadioGroup @bind-Value="@shapeType" size="large">
         <Radio RadioButton Value="@ShapeType.Rect">Rectangle</Radio>
         <Radio RadioButton Value="@ShapeType.Circle">Circle</Radio>
     </RadioGroup>
+    <RadioGroup @bind-Value="@isCreate" size="large">
+        <Radio RadioButton Value="@true">Create</Radio>
+        <Radio RadioButton Value="@false">Delete</Radio>
+    </RadioGroup>
 </div>
 
-<div id="map-drawing" class="map" @onclick="StartDraw" @onmousemove="UpdateDrawingShape">
+<div id="map-drawing" class="map" @onclick="HandleClick" @onmousemove="UpdateDrawingShape">
     @foreach (var obj in storeObjects)
     {
         <StoreShape Data="@obj" @key="@obj"></StoreShape>
@@ -41,13 +45,33 @@
     private StoreObject drawShape;
     private RectPosition mapPosition;
     private ShapeType shapeType = ShapeType.Rect;
+    private bool isCreate = true;
 
     protected override void OnInitialized()
     {
         storeObjects = storeObjectService.GetStoreObjects();
     }
 
-    private async Task StartDraw(MouseEventArgs e)
+    private async Task HandleClick(MouseEventArgs e)
+    {
+        mapPosition = await browserService.GetElementPosition("map-drawing");
+        
+        if (isCreate) StartDraw(e);
+        else DeleteShape(e);
+    }
+
+    private void DeleteShape(MouseEventArgs e)
+    {
+        var objToDelete = storeObjects
+            .FirstOrDefault(x => x.IsInside(e.GetXInDiv(mapPosition), e.GetYInDiv(mapPosition)));
+
+        if (objToDelete != null)
+        {
+            storeObjects.Remove(objToDelete);
+        }
+    }
+
+    private void StartDraw(MouseEventArgs e)
     {
         if (drawShape != null)
         {
@@ -56,21 +80,18 @@
             return;
         }
         
-        mapPosition = await browserService.GetElementPosition("map-drawing");
         drawShape = ShapeFactory.CreateShape(
             shapeType, 
-            (int) e.ClientX - mapPosition.Left, 
-            (int) e.ClientY - mapPosition.Top);
+            e.GetXInDiv(mapPosition), 
+            e.GetYInDiv(mapPosition));
         Console.WriteLine($"Starting drawing: {drawShape.X}:{drawShape.Y}");
     }
 
     private void UpdateDrawingShape(MouseEventArgs e)
     {
-        if (drawShape == null)
-        {
-            return;
-        }
-        
-        drawShape.UpdateSize((int)e.ClientX - mapPosition.Left, (int)e.ClientY - mapPosition.Top, mapPosition);
+        drawShape?.UpdateSize(
+            e.GetXInDiv(mapPosition), 
+            e.GetYInDiv(mapPosition), 
+            mapPosition);
     }
 }
