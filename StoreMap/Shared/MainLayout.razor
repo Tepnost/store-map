@@ -1,15 +1,36 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
+<Layout>
     <NavMenu />
-</div>
+    <Layout>
+        <Header Class="site-layout-sub-header-background"></Header>
+        <Content Class="site-content">
+            <div class="site-layout-background">
+                @Body
+            </div>
+        </Content>
+    </Layout>
+</Layout>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-    </div>
+<style>
+    #components-layout-demo-responsive .logo {
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px;
+    }
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+    .site-layout-sub-header-background {
+        background: #fff;
+        padding: 0;
+    }
+    
+    .site-content {
+        margin: 24px 16px 0;
+    }
+
+    .site-layout-background {
+        background: #fff;
+        padding: 24px; 
+        min-height: 360px
+    }
+</style>

@@ -1,0 +1,31 @@
+﻿@using StoreMap.Data.Dtos
+
+<div class="map" @attributes=OtherAttributes>
+    @foreach (var obj in StoreObjects)
+    {
+        <StoreShape Data="@obj" @key="@obj"></StoreShape>
+    }
+    
+    @ChildContent
+</div>
+
+<style>
+.map {
+    border: 1px solid black;
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    cursor: crosshair;
+}
+</style>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public List<StoreObject> StoreObjects { get; set; }
+    
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> OtherAttributes { get; set; }
+}

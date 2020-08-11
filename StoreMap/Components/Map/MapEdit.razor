@@ -1,0 +1,85 @@
+﻿@using StoreMap.Data.Dtos
+@using StoreMap.Logic.ServiceContracts
+@using StoreMap.Data.Enums
+@using StoreMap.Data.Factory
+@using StoreMap.Extensions
+@inject IStoreObjectService storeObjectService
+@inject IBrowserService browserService
+
+<div class="map-edit-controls">
+    <RadioGroup @bind-Value="@shapeType" size="large">
+        <Radio RadioButton Value="@ShapeType.Rect">Rectangle</Radio>
+        <Radio RadioButton Value="@ShapeType.Circle">Circle</Radio>
+    </RadioGroup>
+    <RadioGroup @bind-Value="@isCreate" size="large">
+        <Radio RadioButton Value="@true">Create</Radio>
+        <Radio RadioButton Value="@false">Delete</Radio>
+    </RadioGroup>
+</div>
+
+<MapView id="map-drawing"
+         StoreObjects="@storeObjects"
+         @onclick="HandleClick"
+         @onmousemove="UpdateDrawingShape">
+    
+    @if (drawShape != null)
+    {
+        <StoreShape Data="@drawShape"></StoreShape>
+    }
+</MapView>
+
+@code {
+    private List<StoreObject> storeObjects = new List<StoreObject>();
+    private StoreObject drawShape;
+    private RectPosition mapPosition;
+    private ShapeType shapeType = ShapeType.Rect;
+    private bool isCreate = true;
+
+    protected override void OnInitialized()
+    {
+        storeObjects = storeObjectService.GetStoreObjects();
+    }
+
+    private async Task HandleClick(MouseEventArgs e)
+    {
+        mapPosition = await browserService.GetElementPosition("map-drawing");
+        
+        if (isCreate) StartDraw(e);
+        else DeleteShape(e);
+    }
+
+    private void DeleteShape(MouseEventArgs e)
+    {
+        var objToDelete = storeObjects
+            .FirstOrDefault(x => x.IsInside(e.GetXInDiv(mapPosition), e.GetYInDiv(mapPosition)));
+
+        if (objToDelete != null)
+        {
+            storeObjects.Remove(objToDelete);
+        }
+    }
+
+    private void StartDraw(MouseEventArgs e)
+    {
+        if (drawShape != null)
+        {
+            storeObjects.Add(drawShape);
+            drawShape = null;
+            return;
+        }
+        
+        drawShape = ShapeFactory.CreateShape(
+            shapeType, 
+            e.GetXInDiv(mapPosition), 
+            e.GetYInDiv(mapPosition));
+        Console.WriteLine($"Starting drawing: {drawShape.X}:{drawShape.Y}");
+    }
+
+    private void UpdateDrawingShape(MouseEventArgs e)
+    {
+        drawShape?.UpdateSize(
+            e.GetXInDiv(mapPosition), 
+            e.GetYInDiv(mapPosition), 
+            mapPosition);
+    }
+}
