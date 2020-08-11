@@ -4,28 +4,48 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-      {
-          "name": ".NET Core Watch",
-          "type": "coreclr",
-          "request": "launch",
-          "program": "dotnet",
-          "args": [
-              "watch",
-              "run"
-          ],
-          "cwd": "${workspaceFolder}/StoreMap",
-          "env": {
-              "ASPNETCORE_ENVIRONMENT": "Development"
-          }
-      },
-      {
-          "name": ".NET Core Debug Blazor Web Assembly in Chrome",
-          "type": "pwa-chrome",
-          "request": "launch",
-          "timeout": 30000,
-          "url": "https://localhost:5001",
-          "webRoot": "${workspaceFolder}/StoreMap",
-          "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+    {
+      "name": ".NET Core Watch",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "dotnet",
+      "args": [
+        "watch",
+        "run"
+      ],
+      "cwd": "${workspaceFolder}/StoreMap",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    {
+      "name": ".NET Core Debug Blazor Web Assembly in Chrome",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "timeout": 30000,
+      "url": "https://localhost:5001",
+      "webRoot": "${workspaceFolder}/StoreMap",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
+    },
+    {
+      "name": "Attach to .NET Functions",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:azureFunctions.pickProcess}"
+    },
+    {
+      "name": "Host Azure Functions",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "func",
+      "args": [
+        "start",
+        "--build"
+      ],
+      "cwd": "${workspaceFolder}/StoreMap.Backend",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
   ]
 }
