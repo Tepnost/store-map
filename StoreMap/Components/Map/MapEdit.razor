@@ -18,13 +18,13 @@
 </div>
 
 <MapView id="map-drawing"
-         StoreObjects="@storeObjects"
-         @onclick="HandleClick"
-         @onmousemove="UpdateDrawingShape">
+         storeObjects="@storeObjects"
+         @onclick="@HandleClick"
+         @onmousemove="@UpdateDrawingShape">
     
     @if (drawShape != null)
     {
-        <StoreShape Data="@drawShape"></StoreShape>
+        <StoreShape data="@drawShape"></StoreShape>
     }
 </MapView>
 

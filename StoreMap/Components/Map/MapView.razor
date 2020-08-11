@@ -3,7 +3,7 @@
 <div class="map" @attributes=OtherAttributes>
     @foreach (var obj in StoreObjects)
     {
-        <StoreShape Data="@obj" @key="@obj"></StoreShape>
+        <StoreShape data="@obj" @key="obj"></StoreShape>
     }
     
     @ChildContent

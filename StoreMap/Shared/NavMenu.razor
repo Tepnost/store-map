@@ -3,9 +3,9 @@
 <Sider Breakpoint="@BreakpointType.Lg"
        CollapsedWidth="0">
     <div class="logo"></div>
-    <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline" DefaultSelectedKeys=@(new[]{currentUrl})>
+    <Menu Theme="@MenuTheme.Dark" Mode="@MenuMode.Inline" DefaultSelectedKeys="@(new[]{currentUrl})">
         <MenuItem Key="">
-            <NavLink href="" Match="NavLinkMatch.All">
+            <NavLink href="" Match="@NavLinkMatch.All">
                 <Icon Type="user" Theme="outline"/>
                 <span class="nav-text">Home</span>
             </NavLink>
