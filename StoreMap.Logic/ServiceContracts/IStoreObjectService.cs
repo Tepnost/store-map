@@ -5,6 +5,6 @@ namespace StoreMap.Logic.ServiceContracts
 {
     public interface IStoreObjectService
     {
-        List<StoreObject> GetStoreObjects();
+        List<StoreObjectDto> GetStoreObjects();
     }
 }

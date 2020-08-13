@@ -6,26 +6,26 @@ namespace StoreMap.Logic.Services
 {
     public class StoreObjectService : IStoreObjectService
     {
-        public List<StoreObject> GetStoreObjects()
+        public List<StoreObjectDto> GetStoreObjects()
         {
-            return new List<StoreObject>
+            return new List<StoreObjectDto>
             {
-                new StoreObjectSquare
+                new StoreObjectRectDto
                 {
                     X = 0, Y = 0,
                     Width = 40, Height = 200
                 },
-                new StoreObjectSquare
+                new StoreObjectRectDto
                 {
                     X = 80, Y = 0,
                     Width = 40, Height = 200
                 },
-                new StoreObjectSquare
+                new StoreObjectRectDto
                 {
                     X = 160, Y = 0,
                     Width = 40, Height = 200
                 },
-                new StoreObjectCircle
+                new StoreObjectCircleDto
                 {
                     X = 300, Y = 100,
                     Diameter = 40

@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Backend", "StoreMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Backend.Data", "StoreMap.Backend.Data\StoreMap.Backend.Data.csproj", "{AA352E14-E962-477C-932F-99A28C3CA2A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Data", "StoreMap.Data\StoreMap.Data.csproj", "{8E9632E1-3A97-4744-867A-23EA3692A8FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Backend.Logic", "StoreMap.Backend.Logic\StoreMap.Backend.Logic.csproj", "{328C0541-9C62-4E10-BD50-DBFCCA8C5C66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{AA352E14-E962-477C-932F-99A28C3CA2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA352E14-E962-477C-932F-99A28C3CA2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA352E14-E962-477C-932F-99A28C3CA2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E9632E1-3A97-4744-867A-23EA3692A8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9632E1-3A97-4744-867A-23EA3692A8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9632E1-3A97-4744-867A-23EA3692A8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9632E1-3A97-4744-867A-23EA3692A8FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{328C0541-9C62-4E10-BD50-DBFCCA8C5C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{328C0541-9C62-4E10-BD50-DBFCCA8C5C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{328C0541-9C62-4E10-BD50-DBFCCA8C5C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{328C0541-9C62-4E10-BD50-DBFCCA8C5C66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

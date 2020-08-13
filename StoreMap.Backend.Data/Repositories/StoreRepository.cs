@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Data.Interfaces;
+using StoreMap.Data.Dtos;
 
 namespace StoreMap.Backend.Data.Repositories
 {
@@ -22,6 +23,15 @@ namespace StoreMap.Backend.Data.Repositories
             var stores = await storesCollection.FindAsync(x => true);
 
             return stores.ToList();
+        }
+
+        public async Task<Store> SaveStore(StoreDto dto)
+        {
+            var store = Store.FromDto(dto);
+            
+            await storesCollection.InsertOneAsync(store);
+
+            return store;
         }
     }
 }

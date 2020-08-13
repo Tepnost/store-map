@@ -6,16 +6,16 @@ namespace StoreMap.Data.Factory
 {
     public static class ShapeFactory
     {
-        public static StoreObject CreateShape(ShapeType type, int x, int y)
+        public static StoreObjectDto CreateShape(ShapeType type, int x, int y)
         {
-            StoreObject shape;
+            StoreObjectDto shape;
             switch (type)
             {
                 case ShapeType.Rect:
-                    shape = new StoreObjectSquare();
+                    shape = new StoreObjectRectDto();
                     break;
                 case ShapeType.Circle:
-                    shape = new StoreObjectCircle();
+                    shape = new StoreObjectCircleDto();
                     break;
                 default:
                     throw new ArgumentException("Incorrect shape type");

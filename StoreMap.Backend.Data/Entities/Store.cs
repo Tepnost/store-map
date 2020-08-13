@@ -1,13 +1,22 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Collections.Generic;
+using System.Linq;
+using StoreMap.Data.Dtos;
 
 namespace StoreMap.Backend.Data.Entities
 {
-    public class Store
+    public class Store : EntityBase
     {
-        public ObjectId Id { get; set; }
-        
-        [BsonElement("name")]
         public string Name { get; set; }
+        
+        public List<StoreObject> StoreObjects { get; set; }
+
+        public static Store FromDto(StoreDto dto)
+        {
+            return new Store
+            {
+                Name = dto.Name,
+                StoreObjects = dto.StoreObjects.Select(StoreObject.FromDto).ToList()
+            };
+        }
     }
 }

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace StoreMap.Data.Dtos
 {
-    public abstract class StoreObject
+    public abstract class StoreObjectDto
     {
         public int X { get; set; }
         public int Y { get; set; }

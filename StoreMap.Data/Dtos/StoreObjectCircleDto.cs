@@ -2,7 +2,7 @@ using System;
 
 namespace StoreMap.Data.Dtos
 {
-    public class StoreObjectCircle : StoreObject
+    public class StoreObjectCircleDto : StoreObjectDto
     {
         public int Diameter { get; set; }
         private int Radius => Diameter / 2;

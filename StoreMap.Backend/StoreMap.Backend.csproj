@@ -18,5 +18,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StoreMap.Backend.Data\StoreMap.Backend.Data.csproj" />
+    <ProjectReference Include="..\StoreMap.Backend.Logic\StoreMap.Backend.Logic.csproj" />
   </ItemGroup>
 </Project>

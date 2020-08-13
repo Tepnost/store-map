@@ -2,7 +2,7 @@
 
 namespace StoreMap.Data.Dtos
 {
-    public class StoreObjectSquare : StoreObject
+    public class StoreObjectRectDto : StoreObjectDto
     {
         public int Width { get; set; }
         public int Height { get; set; }
