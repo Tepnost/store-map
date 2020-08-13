@@ -1,8 +1,10 @@
-﻿using StoreMap.Backend.Data.Exceptions;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using StoreMap.Backend.Data.Exceptions;
 using StoreMap.Data.Dtos;
 
 namespace StoreMap.Backend.Data.Entities
 {
+    [BsonKnownTypes(typeof(StoreObjectCircle), typeof(StoreObjectRect))]
     public class StoreObject
     {
         public int X { get; set; }
