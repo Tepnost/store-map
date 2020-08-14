@@ -20,25 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Pages\Map.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\StoreShape.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="wwwroot\blazorHelpers.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="Components\Map\MapView.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\Map\MapEdit.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\StoreMap.Data\StoreMap.Data.csproj" />
     <ProjectReference Include="..\StoreMap.Logic\StoreMap.Logic.csproj" />
   </ItemGroup>

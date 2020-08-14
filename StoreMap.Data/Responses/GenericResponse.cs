@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace StoreMap.Backend.Logic.Responses
+namespace StoreMap.Data.Responses
 {
     public class GenericResponse<T>
     {

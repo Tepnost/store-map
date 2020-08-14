@@ -1,3 +1,9 @@
-@page "/map"
+@page "/map/{id:guid}"
 
-<MapEdit />
+<MapEdit id="@Id"/>
+
+@code {
+
+    [Parameter] public Guid Id { get; set; }
+
+}

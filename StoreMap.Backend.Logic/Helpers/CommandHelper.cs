@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using StoreMap.Backend.Logic.Responses;
+using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Logic.Helpers
 {

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StoreMap.Data.Util;
 
 namespace StoreMap.Data
 {
@@ -6,7 +7,8 @@ namespace StoreMap.Data
     {
         public static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
-            TypeNameHandling = TypeNameHandling.Objects
+            TypeNameHandling = TypeNameHandling.Objects,
+            SerializationBinder = new CustomSerializationBinder()
         };
     }
 }

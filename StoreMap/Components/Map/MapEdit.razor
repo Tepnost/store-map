@@ -3,7 +3,7 @@
 @using StoreMap.Data.Enums
 @using StoreMap.Data.Factory
 @using StoreMap.Extensions
-@inject IStoreObjectService storeObjectService
+@inject IStoreService storeService
 @inject IBrowserService browserService
 
 <div class="map-edit-controls">
@@ -15,6 +15,8 @@
         <Radio RadioButton Value="@true">Create</Radio>
         <Radio RadioButton Value="@false">Delete</Radio>
     </RadioGroup>
+    
+    <Button Type="primary" @onclick="Save">Save</Button>
 </div>
 
 <MapView id="map-drawing"
@@ -29,15 +31,17 @@
 </MapView>
 
 @code {
-    private List<StoreObjectDto> storeObjects = new List<StoreObjectDto>();
+    private ICollection<StoreObjectDto> storeObjects = new List<StoreObjectDto>();
     private StoreObjectDto drawShape;
     private RectPosition mapPosition;
     private ShapeType shapeType = ShapeType.Rect;
     private bool isCreate = true;
+    [Parameter] public Guid Id { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        storeObjects = storeObjectService.GetStoreObjects();
+        var store = await storeService.GetStore(Id);
+        storeObjects = store.StoreObjects;
     }
 
     private async Task HandleClick(MouseEventArgs e)
@@ -81,5 +85,10 @@
             e.GetXInDiv(mapPosition), 
             e.GetYInDiv(mapPosition), 
             mapPosition);
+    }
+
+    private void Save()
+    {
+        
     }
 }

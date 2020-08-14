@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoreMap.Backend.Logic.Base;
-using StoreMap.Backend.Logic.Responses;
+using StoreMap.Data.Responses;
 
-namespace StoreMap.Backend
+namespace StoreMap.Backend.Util
 {
     public class FunctionBase
     {
         private readonly IServiceProvider serviceProvider;
 
-        protected FunctionBase(IServiceProvider serviceProvider)
+        public FunctionBase(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
         }

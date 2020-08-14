@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StoreMap.Data;
 
-namespace StoreMap.Backend
+namespace StoreMap.Backend.Util
 {
     public class StatusWithDataResult : ActionResult
     {

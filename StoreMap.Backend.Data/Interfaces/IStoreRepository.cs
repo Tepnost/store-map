@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StoreMap.Backend.Data.Entities;
 using StoreMap.Data.Dtos;
@@ -10,5 +11,7 @@ namespace StoreMap.Backend.Data.Interfaces
         Task<List<Store>> GetAllStores();
 
         Task<Store> SaveStore(StoreDto dto);
+
+        Task<Store> FindStore(Guid id);
     }
 }

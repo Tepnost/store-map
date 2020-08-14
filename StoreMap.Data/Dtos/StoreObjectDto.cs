@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace StoreMap.Data.Dtos
 {
     public abstract class StoreObjectDto

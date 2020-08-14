@@ -1,6 +1,6 @@
 ﻿using System;
 using StoreMap.Backend.Logic.Helpers;
-using StoreMap.Backend.Logic.Responses;
+using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Logic.Base
 {

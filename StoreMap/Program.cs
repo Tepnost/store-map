@@ -19,7 +19,7 @@ namespace StoreMap
             builder.Services.AddBlazorStyled();
             builder.Services.AddAntDesign();
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddScoped<IStoreObjectService, StoreObjectService>();
+            builder.Services.AddScoped<IStoreService, StoreService>();
             builder.Services.AddScoped<IBrowserService, BrowserService>();
 
             await builder.Build().RunAsync();

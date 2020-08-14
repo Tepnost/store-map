@@ -1,0 +1,21 @@
+﻿@page "/stores"
+@using StoreMap.Logic.ServiceContracts
+@using StoreMap.Data.Dtos
+@inject IStoreService storeService
+
+@foreach (var store in stores)
+{
+    <NavLink href="@($"map/{store.Id}")">
+        <span class="nav-text">@store.Name</span>
+    </NavLink>
+}
+
+@code {
+    private List<StoreDto> stores = new List<StoreDto>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        stores = await storeService.GetAllStores();
+    }
+
+}

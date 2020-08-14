@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using StoreMap.Backend.Logic.Responses;
+using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Logic.Base
 {

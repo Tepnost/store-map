@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
-using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Data.Interfaces;
 using StoreMap.Backend.Logic.Base;
-using StoreMap.Backend.Logic.Responses;
 using StoreMap.Data.Dtos;
+using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Logic.Commands
 {
-    public class SaveStoreCommand : AsyncCommandBase<StoreDto, Store>
+    public class SaveStoreCommand : AsyncCommandBase<StoreDto, StoreDto>
     {
         private readonly IStoreRepository storeRepository;
 
@@ -16,11 +15,11 @@ namespace StoreMap.Backend.Logic.Commands
             this.storeRepository = storeRepository;
         }
         
-        protected override async Task<GenericResponse<Store>> ExecuteCore(StoreDto request)
+        protected override async Task<GenericResponse<StoreDto>> ExecuteCore(StoreDto request)
         {
             var store = await storeRepository.SaveStore(request);
 
-            return GenericResponse<Store>.AsSuccess(store);
+            return GenericResponse<StoreDto>.AsSuccess(store.ToDto());
         }
     }
 }

@@ -18,5 +18,15 @@ namespace StoreMap.Backend.Data.Entities
                 StoreObjects = dto.StoreObjects.Select(StoreObject.FromDto).ToList()
             };
         }
+
+        public StoreDto ToDto()
+        {
+            return new StoreDto
+            {
+                Id = Id,
+                Name = Name,
+                StoreObjects = StoreObjects.Select(x => x.ToDto()).ToList()
+            };
+        }
     }
 }

@@ -18,5 +18,17 @@ namespace StoreMap.Backend.Data.Entities
                 Width = dto.Width
             };
         }
+
+        public override StoreObjectDto ToDto()
+        {
+            return new StoreObjectRectDto
+            {
+                X = X,
+                Y = Y,
+                Color = Color,
+                Height = Height,
+                Width = Width
+            };
+        }
     }
 }

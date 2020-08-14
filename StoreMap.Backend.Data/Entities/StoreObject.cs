@@ -5,7 +5,7 @@ using StoreMap.Data.Dtos;
 namespace StoreMap.Backend.Data.Entities
 {
     [BsonKnownTypes(typeof(StoreObjectCircle), typeof(StoreObjectRect))]
-    public class StoreObject
+    public abstract class StoreObject
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -25,5 +25,7 @@ namespace StoreMap.Backend.Data.Entities
             
             throw new EntityConversionException(typeof(StoreObject), dto?.GetType());
         }
+
+        public abstract StoreObjectDto ToDto();
     }
 }

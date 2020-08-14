@@ -16,5 +16,16 @@ namespace StoreMap.Backend.Data.Entities
                 Diameter = dto.Diameter
             };
         }
+
+        public override StoreObjectDto ToDto()
+        {
+            return new StoreObjectCircleDto
+            {
+                X = X,
+                Y = Y,
+                Color = Color,
+                Diameter = Diameter
+            };
+        }
     }
 }
