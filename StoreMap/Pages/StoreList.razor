@@ -3,16 +3,33 @@
 @using StoreMap.Data.Dtos
 @inject IStoreService storeService
 
-@foreach (var store in stores)
+@if (stores == null)
 {
-    <NavLink href="@($"map/{store.Id}")">
-        <span class="nav-text">@store.Name</span>
-    </NavLink>
+    <Spin size="large" />
+    return;
 }
 
+<AntList DataSource="@stores"
+         Item="@RenderItem"
+         ItemLayout="@AntDirectionVHType.Horizontal">
+</AntList>
+
 @code {
-    private List<StoreDto> stores = new List<StoreDto>();
-    
+    private List<StoreDto> stores;
+
+    private RenderFragment RenderItem(StoreDto listItem)
+    {
+        RenderFragment edit = @<NavLink href="@($"stores/{listItem.Id}/edit")">
+                                  <span class="nav-text">Edit</span>
+                              </NavLink>;
+
+        return @<AntListItem Actions="@(new List<RenderFragment>(new[] { edit }))">
+                   <NavLink href="@($"stores/{listItem.Id}")">
+                       <span class="nav-text">@listItem.Name</span>
+                   </NavLink>
+               </AntListItem>;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         stores = await storeService.GetAllStores();

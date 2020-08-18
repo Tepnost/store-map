@@ -6,5 +6,7 @@ namespace StoreMap.Logic.ServiceContracts
     public interface IBrowserService
     {
         Task<RectPosition> GetElementPosition(string id);
+
+        Task GoBack();
     }
 }

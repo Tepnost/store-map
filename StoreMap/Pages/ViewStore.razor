@@ -1,0 +1,24 @@
+﻿@page "/stores/{id:guid}"
+@using StoreMap.Data.Dtos
+@using StoreMap.Logic.ServiceContracts
+@inject IStoreService storeService
+
+@if (store == null)
+{
+    <Spin size="large" />
+    return;
+}
+
+<MapView Store="@store"/>
+
+@code {
+    private StoreDto store;
+
+    [Parameter] public Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        store = await storeService.GetStore(Id);
+    }
+
+}

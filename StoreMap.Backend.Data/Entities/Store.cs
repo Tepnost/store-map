@@ -14,6 +14,7 @@ namespace StoreMap.Backend.Data.Entities
         {
             return new Store
             {
+                Id = dto.Id,
                 Name = dto.Name,
                 StoreObjects = dto.StoreObjects.Select(StoreObject.FromDto).ToList()
             };

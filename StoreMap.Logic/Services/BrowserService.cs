@@ -18,5 +18,10 @@ namespace StoreMap.Logic.Services
         {
             return await js.InvokeAsync<RectPosition>("blazor_getElementPosition", id);
         }
+
+        public async Task GoBack()
+        {
+            await js.InvokeVoidAsync("history.back");
+        }
     }
 }

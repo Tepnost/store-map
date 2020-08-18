@@ -1,0 +1,14 @@
+﻿@using StoreMap.Logic.ServiceContracts
+@inject IBrowserService browserService
+
+<Header class="site-layout-sub-header-background">
+    <Button Type="default" Icon="left" Size="large" @onclick="GoBack"/>
+</Header>
+
+@code
+{
+    private async void GoBack()
+    {
+        await browserService.GoBack();
+    }
+}

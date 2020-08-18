@@ -29,8 +29,18 @@ namespace StoreMap.Backend.Data.Repositories
         public async Task<Store> SaveStore(StoreDto dto)
         {
             var store = Store.FromDto(dto);
-            
-            await storesCollection.InsertOneAsync(store);
+
+            if (store.Id == default)
+            {
+                store.Id = Guid.NewGuid();
+                await storesCollection.InsertOneAsync(store);
+            }
+            else
+            {
+                await storesCollection.FindOneAndUpdateAsync(
+                    x => x.Id == store.Id,
+                    new ObjectUpdateDefinition<Store>(store));
+            }
 
             return store;
         }

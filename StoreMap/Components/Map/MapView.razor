@@ -1,7 +1,7 @@
 ﻿@using StoreMap.Data.Dtos
 
 <div class="map" @attributes=OtherAttributes>
-    @foreach (var obj in StoreObjects)
+    @foreach (var obj in Store.StoreObjects)
     {
         <StoreShape data="@obj" @key="obj"></StoreShape>
     }
@@ -20,11 +20,9 @@
 </style>
 
 @code {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
     
-    [Parameter]
-    public List<StoreObjectDto> StoreObjects { get; set; }
+    [Parameter] public StoreDto Store { get; set; }
     
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> OtherAttributes { get; set; }
