@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using StoreMap.Data;
 using StoreMap.Data.Dtos;
@@ -14,12 +15,11 @@ namespace StoreMap.Logic.Services
     public class StoreService : IStoreService
     {
         private readonly HttpClient client;
-        private readonly string apiUrl = "http://localhost:7071/api";
         private List<StoreDto> storeCache;
 
-        public StoreService(HttpClient client)
+        public StoreService(IHttpClientFactory clientFactory)
         {
-            this.client = client;
+            client = clientFactory.CreateClient("API");
             storeCache = new List<StoreDto>();
         }
 
@@ -31,27 +31,43 @@ namespace StoreMap.Logic.Services
                 return store;
             }
             
-            var result = await client.GetAsync($"{apiUrl}/store/{id}");
+            var result = await client.GetAsync($"store/{id}");
             store = await result.GetContentDataAsObject<StoreDto>();
             storeCache.Add(store);
             return store;
         }
 
-        public async Task<List<StoreDto>> GetAllStores()
+        public Task<List<StoreDto>> GetAllStores()
         {
-            var result = await client.GetAsync($"{apiUrl}/store");
-            storeCache = await result.GetContentDataAsObject<List<StoreDto>>();
-            return storeCache;
+            return SafeExecute(async () =>
+            {
+                var result = await client.GetAsync($"store");
+                storeCache = await result.GetContentDataAsObject<List<StoreDto>>();
+                return storeCache;
+            });
         }
 
         public async Task<StoreDto> SaveStore(StoreDto data)
         {
             var content = new StringContent(JsonConvert.SerializeObject(data, Settings.JsonSerializerSettings));
-            var result = await client.PostAsync($"{apiUrl}/store", content);
+            var result = await client.PostAsync($"store", content);
             var store = await result.GetContentDataAsObject<StoreDto>();
             SaveInCache(store);
 
             return store;
+        }
+
+        private async Task<T> SafeExecute<T>(Func<Task<T>> action)
+        {
+            try
+            {
+                return await action();
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
+                return default;
+            }
         }
 
         private void SaveInCache(StoreDto store)
