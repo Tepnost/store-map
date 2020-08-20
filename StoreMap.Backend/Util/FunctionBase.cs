@@ -19,13 +19,13 @@ namespace StoreMap.Backend.Util
         private readonly IServiceProvider serviceProvider;
         private readonly IUserService userService;
 
-        protected FunctionBase(IServiceProvider serviceProvider, IUserService userService)
+        public FunctionBase(IServiceProvider serviceProvider, IUserService userService)
         {
             this.serviceProvider = serviceProvider;
             this.userService = userService;
         }
 
-        protected TCommand ResolveCommand<TCommand>() where TCommand : ICommandBase
+        public TCommand ResolveCommand<TCommand>() where TCommand : ICommandBase
         {
             var command = serviceProvider.GetService(typeof(TCommand));
 
@@ -37,7 +37,7 @@ namespace StoreMap.Backend.Util
             return (TCommand) command;
         }
 
-        protected async Task<IActionResult> SafeExecute<T>(Func<Task<GenericResponse<T>>> action)
+        public async Task<IActionResult> SafeExecute<T>(Func<Task<GenericResponse<T>>> action)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace StoreMap.Backend.Util
             }
         }
         
-        protected async Task<UserData> ValidateTokenAsync(HttpRequest req, UserRole? userRole = UserRole.All)
+        public async Task<UserData> ValidateTokenAsync(HttpRequest req, UserRole? userRole = UserRole.All)
         {
             var value = req.Headers["Authorization"].ToString();
             if (value?.StartsWith("Bearer ") != true)

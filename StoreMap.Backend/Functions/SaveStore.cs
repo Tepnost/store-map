@@ -11,6 +11,7 @@ using StoreMap.Backend.Logic.Commands;
 using StoreMap.Backend.Logic.ServiceContracts;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
+using StoreMap.Data.Enums;
 using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Functions
@@ -31,7 +32,7 @@ namespace StoreMap.Backend.Functions
 
         private async Task<GenericResponse<StoreDto>> Run(HttpRequest req)
         {
-            await ValidateTokenAsync(req, userRole.AdminModerator);
+            await ValidateTokenAsync(req, UserRole.AdminModerator);
             var data = await req.GetBodyAsObject<StoreDto>();
             return await ResolveCommand<SaveStoreCommand>().Execute(data);
         }

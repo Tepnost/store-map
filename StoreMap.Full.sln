@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Logic", "StoreMap.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Data", "StoreMap.Data\StoreMap.Data.csproj", "{38336BEB-C451-414E-9D65-4AA35275FC5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreMap.Backend.Test", "StoreMap.Backend.Test\StoreMap.Backend.Test.csproj", "{DD763E4C-C5FA-4729-854A-73BFA31ED144}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,7 @@ Global
 		{7C7AA037-1A8E-4F8A-B9F0-4357AC6E2274} = {68F9BD88-7E4E-4274-A46F-5AB0BADB8A78}
 		{E9A1E685-924E-44F4-A103-4E1ACA281409} = {68F9BD88-7E4E-4274-A46F-5AB0BADB8A78}
 		{38336BEB-C451-414E-9D65-4AA35275FC5F} = {78932287-4DFD-4F01-87EA-B7DB3BF6C9BE}
+		{DD763E4C-C5FA-4729-854A-73BFA31ED144} = {7FEECFB2-0610-4D24-9B4E-278D3403AF5E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8C3A3803-981B-4B15-AAA3-8C51304E6722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -56,5 +59,9 @@ Global
 		{38336BEB-C451-414E-9D65-4AA35275FC5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38336BEB-C451-414E-9D65-4AA35275FC5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38336BEB-C451-414E-9D65-4AA35275FC5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD763E4C-C5FA-4729-854A-73BFA31ED144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD763E4C-C5FA-4729-854A-73BFA31ED144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD763E4C-C5FA-4729-854A-73BFA31ED144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD763E4C-C5FA-4729-854A-73BFA31ED144}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
