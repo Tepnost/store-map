@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Logic.Commands;
 using StoreMap.Backend.Logic.Requests;
+using StoreMap.Backend.Logic.ServiceContracts;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Responses;
@@ -16,13 +17,13 @@ namespace StoreMap.Backend.Functions
 {
     public class GetStore : FunctionBase
     {
-        public GetStore(IServiceProvider serviceProvider) : base(serviceProvider)
+        public GetStore(IServiceProvider serviceProvider, IUserService userService) : base(serviceProvider, userService)
         {
         }
         
         [FunctionName("GetStore")]
         public Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "store/{id:Guid}")] HttpRequest req, Guid id,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "store/{id:Guid}")] HttpRequest req, Guid id,
             ILogger log)
         {
             return SafeExecute(() => Run(req, id));

@@ -33,6 +33,7 @@ namespace StoreMap
             builder.Services.AddOidcAuthentication(options =>
             {
                 builder.Configuration.Bind("Local", options.ProviderOptions);
+                options.ProviderOptions.DefaultScopes.Add("https://store-map.com/assignedRoles");
             });
             
             builder.Services.AddScoped<CustomAuthorizationMessageHandler>();

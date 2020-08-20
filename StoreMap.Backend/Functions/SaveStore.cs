@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Extensions;
 using StoreMap.Backend.Logic.Commands;
+using StoreMap.Backend.Logic.ServiceContracts;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Responses;
@@ -16,13 +17,13 @@ namespace StoreMap.Backend.Functions
 {
     public class SaveStore : FunctionBase
     {
-        public SaveStore(IServiceProvider serviceProvider) : base(serviceProvider)
+        public SaveStore(IServiceProvider serviceProvider, IUserService userService) : base(serviceProvider, userService)
         {
         }
         
         [FunctionName("SaveStore")]
         public Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "store")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "store")] HttpRequest req,
             ILogger log)
         {
             return SafeExecute(() => Run(req));
@@ -30,6 +31,7 @@ namespace StoreMap.Backend.Functions
 
         private async Task<GenericResponse<StoreDto>> Run(HttpRequest req)
         {
+            await ValidateTokenAsync(req, userRole.AdminModerator);
             var data = await req.GetBodyAsObject<StoreDto>();
             return await ResolveCommand<SaveStoreCommand>().Execute(data);
         }
