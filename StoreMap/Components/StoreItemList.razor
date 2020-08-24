@@ -1,0 +1,94 @@
+﻿@using StoreMap.Data.Dtos
+@using StoreMap.Data.Enums
+
+<div class="store-item-list">
+    <Table DataSource="@Store.StoreItems">
+        <Column @bind-Field="@context.Name">
+            @if (context.IsEditing)
+            {
+                <Input @bind-Value="@context.TempName" Placeholder="Item name"/>
+            }
+            else
+            {
+                <span>@context.Name</span>
+            }
+        </Column>
+        <Column @bind-Field="@context.X"></Column>
+        <Column @bind-Field="@context.Y"></Column>
+        <ActionColumn>
+            <Space>
+                @if (context.IsEditing)
+                {
+                    <SpaceItem><Button OnClick="() => Save(context.Id)">Save</Button></SpaceItem>
+                    <SpaceItem><Button OnClick="() => Cancel(context.Id)">Cancel</Button></SpaceItem>
+                }
+                else
+                {
+                    <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
+                    <SpaceItem><Button OnClick="() => Move(context.Id)">Move</Button></SpaceItem>
+                    <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+                }
+            </Space>
+        </ActionColumn>
+    </Table>
+</div>
+
+<style>
+.store-item-list {
+    display: flex;
+    flex-direction: column;
+}
+</style>
+
+
+@code{
+    [Parameter] public StoreDto Store { get; set; }
+    [CascadingParameter] EditStore EditStore { get; set; }
+
+    private StoreItemExtendedDto GetItem(Guid id) => Store.StoreItems.First(x => x.Id == id);
+
+    private void Delete(Guid id)
+    {
+        var index = Store.StoreItems.FindIndex(x => x.Id == id);
+        if (index == -1)
+        {
+            return;
+        }
+        
+        Store.StoreItems.RemoveAt(index);
+    }
+
+    private void Move(Guid id)
+    {
+        var item = GetItem(id);
+        item.IsMoving = true;
+        EditStore.MapAction = ShapeObjectAction.Move;
+        EditStore.Update();
+    }
+
+    private void Edit(Guid id)
+    {
+        var item = GetItem(id);
+        item.TempName = item.Name;
+        item.IsEditing = true;
+    }
+
+    private void Save(Guid id)
+    {
+        var item = GetItem(id);
+        item.Name = item.TempName;
+        item.IsEditing = false;
+    }
+
+    private void Cancel(Guid id)
+    {
+        var item = GetItem(id);
+        item.IsEditing = false;
+
+        if (string.IsNullOrEmpty(item.Name))
+        {
+            Delete(id);
+        }
+    }
+
+}

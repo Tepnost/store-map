@@ -1,5 +1,6 @@
 @page "/stores/{id:guid}/edit"
 @using StoreMap.Data.Dtos
+@using StoreMap.Data.Enums
 @using StoreMap.Logic.ServiceContracts
 @inject IStoreService storeService
 
@@ -9,10 +10,18 @@
     return;
 }
 
-<MapEdit Store="@store"/>
+<CascadingValue Value="this">
+    <MapEdit Store="@store"/>
+    <Divider />
+
+    <StoreItemList Store="@store"/>
+
+    <Button Type="primary" Size="large" Block @onclick="@Save">Save</Button>
+</CascadingValue>
 
 @code {
     private StoreDto store;
+    public ShapeObjectAction MapAction = ShapeObjectAction.Create;
 
     [Parameter] public Guid Id { get; set; }
 
@@ -21,4 +30,13 @@
         store = await storeService.GetStore(Id);
     }
 
+    public void Update()
+    {
+        StateHasChanged();
+    }
+
+    private void Save()
+    {
+        storeService.SaveStore(store);
+    }
 }

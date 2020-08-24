@@ -1,8 +1,9 @@
 namespace StoreMap.Data.Enums
 {
-    public enum ShapeType
+    public enum ShopObjectType
     {
         Circle,
-        Rect
+        Rect,
+        Item
     }
 }

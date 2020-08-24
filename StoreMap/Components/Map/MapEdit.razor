@@ -3,25 +3,9 @@
 @using StoreMap.Data.Enums
 @using StoreMap.Data.Factory
 @using StoreMap.Extensions
+@using System.Drawing
 @inject IStoreService storeService
 @inject IBrowserService browserService
-
-<div class="map-edit-controls">
-    <RadioGroup @bind-Value="@isCreate" size="large">
-        <Radio RadioButton Value="@true">Create</Radio>
-        <Radio RadioButton Value="@false">Delete</Radio>
-    </RadioGroup>
-    
-    @if (isCreate)
-    {
-        <RadioGroup @bind-Value="@shapeType" size="large">
-            <Radio RadioButton Value="@ShapeType.Rect">Rectangle</Radio>
-            <Radio RadioButton Value="@ShapeType.Circle">Circle</Radio>
-        </RadioGroup>
-    }
-    <br/>
-    <Button Type="primary" @onclick="Save">Save</Button>
-</div>
 
 <MapView id="map-drawing"
          Store="@Store"
@@ -34,19 +18,63 @@
     }
 </MapView>
 
+<div class="map-edit-controls">
+    <RadioGroup @bind-Value="@EditStore.MapAction" size="large">
+        @if (EditStore.MapAction == ShapeObjectAction.Move)
+        {
+            <Radio RadioButton Value="@ShapeObjectAction.Create">Cancel</Radio>
+        }
+        else
+        {
+            <Radio RadioButton Value="@ShapeObjectAction.Create">Create</Radio>
+            <Radio RadioButton Value="@ShapeObjectAction.Delete">Delete</Radio>
+        }
+    </RadioGroup>
+    
+    @if (EditStore.MapAction == ShapeObjectAction.Create)
+    {
+        // TODO: Color picker
+        
+        <RadioGroup @bind-Value="@shopObjectType" size="large">
+            <Radio RadioButton Value="@ShopObjectType.Rect">Rectangle</Radio>
+            <Radio RadioButton Value="@ShopObjectType.Circle">Circle</Radio>
+        </RadioGroup>
+        <RadioGroup @bind-Value="@shopObjectType" size="large" ButtonStyle="solid">
+            <Radio RadioButton Value="@ShopObjectType.Item">Add Item</Radio>
+        </RadioGroup>
+    }
+</div>
+
+<style>
+.map-edit-controls {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+</style>
+
 @code {
     [Parameter] public StoreDto Store { get; set; }
+    [CascadingParameter] EditStore EditStore { get; set; }
     private StoreObjectDto drawShape;
     private RectPosition mapPosition;
-    private ShapeType shapeType = ShapeType.Rect;
-    private bool isCreate = true;
+    private ShopObjectType shopObjectType = ShopObjectType.Rect;
 
     private async Task HandleClick(MouseEventArgs e)
     {
         mapPosition = await browserService.GetElementPosition("map-drawing");
-        
-        if (isCreate) StartDraw(e);
-        else DeleteShape(e);
+
+        switch (EditStore.MapAction)
+        {
+            case ShapeObjectAction.Create:
+                StartDraw(e);
+                break;
+            case ShapeObjectAction.Delete:
+                DeleteShape(e);
+                break;
+            default:
+                MoveStoreItem(e);
+                break;
+        }
     }
 
     private void DeleteShape(MouseEventArgs e)
@@ -68,12 +96,47 @@
             drawShape = null;
             return;
         }
+
+        if (shopObjectType == ShopObjectType.Item)
+        {
+            CreateStoreItem(e);
+            return;
+        }
         
         drawShape = ShapeFactory.CreateShape(
-            shapeType, 
+            shopObjectType, 
             e.GetXInDiv(mapPosition), 
             e.GetYInDiv(mapPosition));
         Console.WriteLine($"Starting drawing: {drawShape.X}:{drawShape.Y}");
+    }
+
+    private void MoveStoreItem(MouseEventArgs e)
+    {
+        var item = Store.StoreItems.FirstOrDefault(x => x.IsMoving);
+        if (item == null)
+        {
+            return;
+        }
+        
+        item.X = e.GetXInDiv(mapPosition);
+        item.Y = e.GetYInDiv(mapPosition);
+        item.IsMoving = false;
+
+        EditStore.MapAction = ShapeObjectAction.Create;
+        EditStore.Update();
+    }
+
+    private void CreateStoreItem(MouseEventArgs e)
+    {
+        Store.StoreItems.Insert(0, new StoreItemExtendedDto
+        {
+            Id = Guid.NewGuid(),
+            X = e.GetXInDiv(mapPosition),
+            Y = e.GetYInDiv(mapPosition),
+            IsEditing = true
+        });
+            
+        EditStore.Update();
     }
 
     private void UpdateDrawingShape(MouseEventArgs e)
@@ -82,10 +145,5 @@
             e.GetXInDiv(mapPosition), 
             e.GetYInDiv(mapPosition), 
             mapPosition);
-    }
-
-    private void Save()
-    {
-        storeService.SaveStore(Store);
     }
 }

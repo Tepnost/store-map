@@ -6,15 +6,15 @@ namespace StoreMap.Data.Factory
 {
     public static class ShapeFactory
     {
-        public static StoreObjectDto CreateShape(ShapeType type, int x, int y)
+        public static StoreObjectDto CreateShape(ShopObjectType type, int x, int y)
         {
             StoreObjectDto shape;
             switch (type)
             {
-                case ShapeType.Rect:
+                case ShopObjectType.Rect:
                     shape = new StoreObjectRectDto();
                     break;
-                case ShapeType.Circle:
+                case ShopObjectType.Circle:
                     shape = new StoreObjectCircleDto();
                     break;
                 default:
