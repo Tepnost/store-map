@@ -34,14 +34,15 @@
     @if (EditStore.MapAction == ShapeObjectAction.Create)
     {
         // TODO: Color picker
-        
-        <RadioGroup @bind-Value="@shopObjectType" size="large">
-            <Radio RadioButton Value="@ShopObjectType.Rect">Rectangle</Radio>
-            <Radio RadioButton Value="@ShopObjectType.Circle">Circle</Radio>
-        </RadioGroup>
-        <RadioGroup @bind-Value="@shopObjectType" size="large" ButtonStyle="solid">
-            <Radio RadioButton Value="@ShopObjectType.Item">Add Item</Radio>
-        </RadioGroup>
+        <div>
+            <RadioGroup @bind-Value="@shopObjectType" size="large">
+                <Radio RadioButton Value="@ShopObjectType.Rect">Rectangle</Radio>
+                <Radio RadioButton Value="@ShopObjectType.Circle">Circle</Radio>
+            </RadioGroup>
+            <RadioGroup @bind-Value="@shopObjectType" size="large" ButtonStyle="solid">
+                <Radio RadioButton Value="@ShopObjectType.Item">Add Item</Radio>
+            </RadioGroup>
+        </div>
     }
 </div>
 
@@ -49,6 +50,8 @@
 .map-edit-controls {
     margin-top: 10px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 </style>
 

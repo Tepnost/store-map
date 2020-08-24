@@ -1,0 +1,44 @@
+﻿@using StoreMap.Data.Dtos
+
+<Tooltip Placement="@PlacementType.Top" Title="@Data.Name">
+    <div class="@itemClassName">
+        @if (Data.IsFocused)
+        {
+            <Icon Type="flag" Theme="fill"/>
+        }
+    </div>
+</Tooltip>
+
+<Styled @bind-Classname="@itemClassName">
+    position: absolute;
+    left: @(Data.X + "px");
+    top: @(Data.Y + "px");
+    @if (Data.IsFocused)
+    {
+        @("width: 10px;")
+        @("height: 10px;")
+    }
+    else
+    {
+        @("background: black;")
+        @("width: 7px;")
+        @("height: 7px;")
+        @("border-radius: 4px;")
+    }
+    
+    &:hover  {
+        @if (Data.IsFocused)
+        {
+            @("color: red;")
+        }
+        else
+        {
+            @("background: red;")
+        }
+    }
+</Styled>
+
+@code {
+    [Parameter] public StoreItemExtendedDto Data { get; set; }
+    private string itemClassName;
+}

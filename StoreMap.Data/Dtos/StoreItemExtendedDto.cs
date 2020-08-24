@@ -5,5 +5,6 @@
         public string TempName { get; set; }
         public bool IsEditing { get; set; }
         public bool IsMoving { get; set; }
+        public bool IsFocused { get; set; }
     }
 }
