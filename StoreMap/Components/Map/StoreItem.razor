@@ -2,7 +2,7 @@
 
 <Tooltip Placement="@PlacementType.Top" Title="@Data.Name">
     <div class="@itemClassName">
-        @if (Data.IsFocused)
+        @if (Focused)
         {
             <Icon Type="flag" Theme="fill"/>
         }
@@ -13,7 +13,7 @@
     position: absolute;
     left: @(Data.X + "px");
     top: @(Data.Y + "px");
-    @if (Data.IsFocused)
+    @if (Focused)
     {
         @("width: 10px;")
         @("height: 10px;")
@@ -27,7 +27,7 @@
     }
     
     &:hover  {
-        @if (Data.IsFocused)
+        @if (Focused)
         {
             @("color: red;")
         }
@@ -39,6 +39,7 @@
 </Styled>
 
 @code {
-    [Parameter] public StoreItemExtendedDto Data { get; set; }
+    [Parameter] public StoreItemDto Data { get; set; }
+    [Parameter] public bool Focused { get; set; }
     private string itemClassName;
 }

@@ -46,7 +46,7 @@ namespace StoreMap.Backend.Util
             }
             catch (HttpResponseException e)
             {
-                return new StatusWithDataResult(e.Response.StatusCode);
+                return new StatusWithDataResult(e.Response.StatusCode, GenericResponse<object>.AsFailure());
             }
         }
         

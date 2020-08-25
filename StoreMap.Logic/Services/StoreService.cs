@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using StoreMap.Data;
 using StoreMap.Data.Dtos;
+using StoreMap.Data.Responses;
 using StoreMap.Logic.Extensions;
 using StoreMap.Logic.ServiceContracts;
 
@@ -47,14 +48,18 @@ namespace StoreMap.Logic.Services
             });
         }
 
-        public async Task<StoreDto> SaveStore(StoreDto data)
+        public async Task<GenericResponse<StoreDto>> SaveStore(StoreDto data)
         {
             var content = new StringContent(JsonConvert.SerializeObject(data, Settings.JsonSerializerSettings));
             var result = await client.PostAsync($"store", content);
-            var store = await result.GetContentDataAsObject<StoreDto>();
-            SaveInCache(store);
+            var response = await result.GetContentAsObject<StoreDto>();
 
-            return store;
+            if (response.Success)
+            {
+                SaveInCache(response.Data);
+            }
+
+            return response;
         }
 
         private async Task<T> SafeExecute<T>(Func<Task<T>> action)

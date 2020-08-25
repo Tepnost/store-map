@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace StoreMap.Data.Dtos
 {
     public abstract class StoreObjectDto
@@ -6,6 +8,7 @@ namespace StoreMap.Data.Dtos
         public int Y { get; set; }
         public string Color { get; set; } = "#f8f1df";
 
+        [JsonIgnore]
         public abstract string GetShapeStyles { get; }
 
         public abstract void UpdateSize(int currentX, int currentY, RectPosition boundaries = null);

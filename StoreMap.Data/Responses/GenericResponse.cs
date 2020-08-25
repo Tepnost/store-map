@@ -25,7 +25,7 @@ namespace StoreMap.Data.Responses
             {
                 Success = false, 
                 Data = data,
-                Message = message,
+                Message = message ?? "Oops! Something went wrong...",
                 StatusCode = status
             };
         }

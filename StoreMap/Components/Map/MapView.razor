@@ -5,12 +5,12 @@
     {
         <StoreShape Data="@obj" @key="obj"></StoreShape>
     }
-    
+
     @foreach (var item in Store.StoreItems)
     {
         <StoreItem Data="@item"></StoreItem>
     }
-    
+
     @ChildContent
 </div>
 

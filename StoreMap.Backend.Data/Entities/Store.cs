@@ -8,7 +8,9 @@ namespace StoreMap.Backend.Data.Entities
     {
         public string Name { get; set; }
         
-        public List<StoreObject> StoreObjects { get; set; }
+        public List<StoreObject> StoreObjects { get; set; } = new List<StoreObject>();
+        
+        public List<StoreItem> StoreItems { get; set; } = new List<StoreItem>();
 
         public static Store FromDto(StoreDto dto)
         {
@@ -16,7 +18,8 @@ namespace StoreMap.Backend.Data.Entities
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                StoreObjects = dto.StoreObjects.Select(StoreObject.FromDto).ToList()
+                StoreObjects = dto.StoreObjects?.Select(StoreObject.FromDto).ToList() ?? new List<StoreObject>(),
+                StoreItems = dto.StoreItems?.Select(StoreItem.FromDto).ToList() ?? new List<StoreItem>()
             };
         }
 
@@ -26,7 +29,8 @@ namespace StoreMap.Backend.Data.Entities
             {
                 Id = Id,
                 Name = Name,
-                StoreObjects = StoreObjects.Select(x => x.ToDto()).ToList()
+                StoreObjects = StoreObjects.Select(x => x.ToDto()).ToList(),
+                StoreItems = StoreItems.Select(x => x.ToDto()).ToList()
             };
         }
     }

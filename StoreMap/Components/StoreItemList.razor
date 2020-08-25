@@ -2,7 +2,7 @@
 @using StoreMap.Data.Enums
 
 <div class="store-item-list">
-    <Table DataSource="@Store.StoreItems">
+    <Table DataSource="@EditStore.StoreItems">
         <Column @bind-Field="@context.Name">
             @if (context.IsEditing)
             {
@@ -42,10 +42,10 @@
 
 
 @code{
-    [Parameter] public StoreDto Store { get; set; }
     [CascadingParameter] EditStore EditStore { get; set; }
+    private StoreDto Store => EditStore.Store;
 
-    private StoreItemExtendedDto GetItem(Guid id) => Store.StoreItems.First(x => x.Id == id);
+    private StoreItemExtendedDto GetItem(Guid id) => EditStore.StoreItems.First(x => x.Id == id);
 
     private void Delete(Guid id)
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using StoreMap.Data.Dtos;
+using StoreMap.Data.Responses;
 
 namespace StoreMap.Logic.ServiceContracts
 {
@@ -11,6 +12,6 @@ namespace StoreMap.Logic.ServiceContracts
 
         Task<List<StoreDto>> GetAllStores();
 
-        Task<StoreDto> SaveStore(StoreDto data);
+        Task<GenericResponse<StoreDto>> SaveStore(StoreDto data);
     }
 }

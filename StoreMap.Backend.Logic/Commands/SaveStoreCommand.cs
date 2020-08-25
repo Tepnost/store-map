@@ -19,7 +19,12 @@ namespace StoreMap.Backend.Logic.Commands
         {
             var store = await storeRepository.SaveStore(request);
 
-            return GenericResponse<StoreDto>.AsSuccess(store.ToDto());
+            return new GenericResponse<StoreDto>
+            {
+                Data = store.ToDto(),
+                Success = true,
+                Message = "Store saved successfully!"
+            };
         }
     }
 }

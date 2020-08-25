@@ -56,8 +56,8 @@
 </style>
 
 @code {
-    [Parameter] public StoreDto Store { get; set; }
     [CascadingParameter] EditStore EditStore { get; set; }
+    private StoreDto Store => EditStore.Store;
     private StoreObjectDto drawShape;
     private RectPosition mapPosition;
     private ShopObjectType shopObjectType = ShopObjectType.Rect;
@@ -115,7 +115,7 @@
 
     private void MoveStoreItem(MouseEventArgs e)
     {
-        var item = Store.StoreItems.FirstOrDefault(x => x.IsMoving);
+        var item = EditStore.StoreItems.FirstOrDefault(x => x.IsMoving);
         if (item == null)
         {
             return;
@@ -131,7 +131,7 @@
 
     private void CreateStoreItem(MouseEventArgs e)
     {
-        Store.StoreItems.Insert(0, new StoreItemExtendedDto
+        EditStore.StoreItems.Insert(0, new StoreItemExtendedDto
         {
             Id = Guid.NewGuid(),
             X = e.GetXInDiv(mapPosition),

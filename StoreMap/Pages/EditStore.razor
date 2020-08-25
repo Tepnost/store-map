@@ -1,42 +1,85 @@
 @page "/stores/{id:guid}/edit"
 @using StoreMap.Data.Dtos
 @using StoreMap.Data.Enums
+@using StoreMap.Data.Responses
 @using StoreMap.Logic.ServiceContracts
 @inject IStoreService storeService
+@inject MessageService message
 
-@if (store == null)
+@if (Store == null)
 {
     <Spin size="large" />
     return;
 }
 
 <CascadingValue Value="this">
-    <MapEdit Store="@store"/>
+    <MapEdit />
     <Divider />
-
-    <StoreItemList Store="@store"/>
-
-    <Button Type="primary" Size="large" Block @onclick="@Save">Save</Button>
+    <StoreItemList />
+    
+    <Button Type="primary" Size="large" Block @onclick="@Save" Disabled="@savingInProgress">
+        @if (savingInProgress)
+        {
+            <Spin Size="small" />
+        }
+        else
+        {
+            @("Save")
+        }
+    </Button>
 </CascadingValue>
 
 @code {
-    private StoreDto store;
+    public StoreDto Store;
+    public List<StoreItemExtendedDto> StoreItems { get; private set; }
     public ShapeObjectAction MapAction = ShapeObjectAction.Create;
+    private bool savingInProgress;
 
     [Parameter] public Guid Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        store = await storeService.GetStore(Id);
+        Store = await storeService.GetStore(Id);
+        StoreItems = GetStoreItems(Store);
     }
+
+    private List<StoreItemExtendedDto> GetStoreItems(StoreDto store) =>
+        store.StoreItems?.Select(x => new StoreItemExtendedDto(x)).ToList() 
+        ?? new List<StoreItemExtendedDto>();
 
     public void Update()
     {
+        Store.StoreItems = StoreItems.Cast<StoreItemDto>().ToList();
         StateHasChanged();
     }
 
-    private void Save()
+    private async Task Save()
     {
-        storeService.SaveStore(store);
+        savingInProgress = true;
+        
+        Store.StoreItems = StoreItems.Select(x => new StoreItemDto(x)).ToList();
+        var response = await storeService.SaveStore(Store);
+        
+        savingInProgress = false;
+        
+        if (response.Success)
+        {
+            Store = response.Data;
+            StoreItems = GetStoreItems(Store);
+        }
+        
+        ShowMessage(response);
+    }
+
+    private void ShowMessage(GenericResponse<StoreDto> response)
+    {
+        if (response.Success)
+        {
+            message.Success(response.Message);
+        }
+        else
+        {
+            message.Error(response.Message);
+        }
     }
 }
