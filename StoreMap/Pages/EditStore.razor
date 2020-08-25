@@ -4,7 +4,8 @@
 @using StoreMap.Data.Responses
 @using StoreMap.Logic.ServiceContracts
 @inject IStoreService storeService
-@inject MessageService message
+@inject IMessageService message
+@inject NavigationManager navigationManager;
 
 @if (Store == null)
 {
@@ -17,7 +18,7 @@
     <Divider />
     <StoreItemList />
     
-    <Button Type="primary" Size="large" Block @onclick="@Save" Disabled="@savingInProgress">
+    <Button Class="save-store-btn" Type="primary" Size="large" Block @onclick="@Save" Disabled="@savingInProgress">
         @if (savingInProgress)
         {
             <Spin Size="small" />
@@ -31,7 +32,7 @@
 
 @code {
     public StoreDto Store;
-    public List<StoreItemExtendedDto> StoreItems { get; private set; }
+    public List<StoreItemExtendedDto> StoreItems { get; set; }
     public ShapeObjectAction MapAction = ShapeObjectAction.Create;
     private bool savingInProgress;
 
@@ -40,6 +41,12 @@
     protected override async Task OnInitializedAsync()
     {
         Store = await storeService.GetStore(Id);
+        if (Store == null)
+        {
+            navigationManager.NavigateTo("/stores");
+            return;
+        }
+        
         StoreItems = GetStoreItems(Store);
     }
 
@@ -50,7 +57,7 @@
     public void Update()
     {
         Store.StoreItems = StoreItems.Cast<StoreItemDto>().ToList();
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
     private async Task Save()

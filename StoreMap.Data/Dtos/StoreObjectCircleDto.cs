@@ -13,7 +13,7 @@ namespace StoreMap.Data.Dtos
         
         public override void UpdateSize(int currentX, int currentY, RectPosition boundaries = null)
         {
-            var width = GetDistanceTo(X, Y, currentX, currentY);
+            var width = GetDistanceTo(X, Y, currentX, currentY) * 2;
 
             if (boundaries != null && 
                (X + width + boundaries.Left > boundaries.Right ||

@@ -1,7 +1,7 @@
 ﻿@using StoreMap.Data.Dtos
 
 <Tooltip Placement="@PlacementType.Top" Title="@Data.Name">
-    <div class="@itemClassName">
+    <div class="store-item @itemClassName">
         @if (Focused)
         {
             <Icon Type="flag" Theme="fill"/>

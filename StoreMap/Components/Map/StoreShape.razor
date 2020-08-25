@@ -1,6 +1,6 @@
 @using StoreMap.Data.Dtos
 
-<div class="@shapeClassName">
+<div class="store-shape @shapeClassName">
 </div>
 
 <Styled @bind-Classname="@shapeClassName">
@@ -12,7 +12,7 @@
 </Styled>
 
 @code {
-    private string shapeClassName { get; set; }
+    private string shapeClassName;
         
     [Parameter] public StoreObjectDto Data { get; set; }
 }

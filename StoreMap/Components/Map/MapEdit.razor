@@ -36,11 +36,11 @@
         // TODO: Color picker
         <div>
             <RadioGroup @bind-Value="@shopObjectType" size="large">
-                <Radio RadioButton Value="@ShopObjectType.Rect">Rectangle</Radio>
-                <Radio RadioButton Value="@ShopObjectType.Circle">Circle</Radio>
+                <Radio Class="map-edit-controls-shape-rect" RadioButton Value="@ShopObjectType.Rect">Rectangle</Radio>
+                <Radio Class="map-edit-controls-shape-circle" RadioButton Value="@ShopObjectType.Circle">Circle</Radio>
             </RadioGroup>
             <RadioGroup @bind-Value="@shopObjectType" size="large" ButtonStyle="solid">
-                <Radio RadioButton Value="@ShopObjectType.Item">Add Item</Radio>
+                <Radio Class="map-edit-controls-shape-item" RadioButton Value="@ShopObjectType.Item">Add Item</Radio>
             </RadioGroup>
         </div>
     }
@@ -56,7 +56,7 @@
 </style>
 
 @code {
-    [CascadingParameter] EditStore EditStore { get; set; }
+    [CascadingParameter] public EditStore EditStore { get; set; }
     private StoreDto Store => EditStore.Store;
     private StoreObjectDto drawShape;
     private RectPosition mapPosition;
@@ -110,7 +110,6 @@
             shopObjectType, 
             e.GetXInDiv(mapPosition), 
             e.GetYInDiv(mapPosition));
-        Console.WriteLine($"Starting drawing: {drawShape.X}:{drawShape.Y}");
     }
 
     private void MoveStoreItem(MouseEventArgs e)

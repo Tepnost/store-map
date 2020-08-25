@@ -19,14 +19,14 @@
             <Space>
                 @if (context.IsEditing)
                 {
-                    <SpaceItem><Button OnClick="() => Save(context.Id)">Save</Button></SpaceItem>
-                    <SpaceItem><Button OnClick="() => Cancel(context.Id)">Cancel</Button></SpaceItem>
+                    <SpaceItem><Button Class="store-item-list-save-btn" OnClick="() => Save(context.Id)">Save</Button></SpaceItem>
+                    <SpaceItem><Button Class="store-item-list-cancel-btn" OnClick="() => Cancel(context.Id)">Cancel</Button></SpaceItem>
                 }
                 else
                 {
-                    <SpaceItem><Button OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
-                    <SpaceItem><Button OnClick="() => Move(context.Id)">Move</Button></SpaceItem>
-                    <SpaceItem><Button Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+                    <SpaceItem><Button Class="store-item-list-edit-btn" OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
+                    <SpaceItem><Button Class="store-item-list-move-btn" OnClick="() => Move(context.Id)">Move</Button></SpaceItem>
+                    <SpaceItem><Button Class="store-item-list-delete-btn" Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
                 }
             </Space>
         </ActionColumn>
@@ -42,20 +42,20 @@
 
 
 @code{
-    [CascadingParameter] EditStore EditStore { get; set; }
+    [CascadingParameter] public EditStore EditStore { get; set; }
     private StoreDto Store => EditStore.Store;
 
     private StoreItemExtendedDto GetItem(Guid id) => EditStore.StoreItems.First(x => x.Id == id);
 
     private void Delete(Guid id)
     {
-        var index = Store.StoreItems.FindIndex(x => x.Id == id);
+        var index = EditStore.StoreItems.FindIndex(x => x.Id == id);
         if (index == -1)
         {
             return;
         }
         
-        Store.StoreItems.RemoveAt(index);
+        EditStore.StoreItems.RemoveAt(index);
         EditStore.Update();
     }
 
