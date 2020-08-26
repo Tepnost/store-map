@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Extensions;
 using StoreMap.Backend.Logic.Commands;
 using StoreMap.Backend.Logic.ServiceContracts;
@@ -24,15 +22,14 @@ namespace StoreMap.Backend.Functions
         
         [FunctionName("SaveStore")]
         public Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "store")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "store")] HttpRequest req)
         {
-            return SafeExecute(() => Run(req));
+            return SafeExecute(() => RunInternal(req));
         }
 
-        private async Task<GenericResponse<StoreDto>> Run(HttpRequest req)
+        private async Task<GenericResponse<StoreDto>> RunInternal(HttpRequest req)
         {
-            await ValidateTokenAsync(req, UserRole.AdminModerator);
+            await ValidateTokenAsync(req, UserRole.AdminMod);
             var data = await req.GetBodyAsObject<StoreDto>();
             return await ResolveCommand<SaveStoreCommand>().Execute(data);
         }

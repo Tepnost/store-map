@@ -13,5 +13,7 @@ namespace StoreMap.Backend.Data.Interfaces
         Task<Store> SaveStore(StoreDto dto);
 
         Task<Store> FindStore(Guid id);
+
+        Task<bool> DeleteStore(Guid id);
     }
 }

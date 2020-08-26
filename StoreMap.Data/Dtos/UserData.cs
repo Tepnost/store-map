@@ -8,7 +8,7 @@ namespace StoreMap.Data.Dtos
         public string Sub { get; set; }
         public string Name { get; set; }
         public string Nickname { get; set; }
-        [JsonPropertyName("https://store-map.com/assignedRoles")]
-        public List<string> Roles { get; set; }
+        [JsonPropertyName(Constants.RolesClaim)]
+        public string Role { get; set; }
     }
 }

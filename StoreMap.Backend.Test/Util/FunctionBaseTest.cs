@@ -14,6 +14,7 @@ using StoreMap.Backend.Test.Mocks;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Enums;
+using StoreMap.Data.Extensions;
 using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Test.Util
@@ -105,13 +106,13 @@ namespace StoreMap.Backend.Test.Util
         }
         
         [TestCaseSource(nameof(TokenTestData))]
-        public void FunctionBase_ValidateTokenAsync_WhenTokensDontMatch_ShouldThrowForbidden(string[] roles, UserRole allowedRoles, bool shouldThrow)
+        public void FunctionBase_ValidateTokenAsync_WhenTokensDontMatch_ShouldThrowForbidden(string roles, UserRole allowedRoles, bool shouldThrow)
         {
             userServiceMock
                 .Setup(x => x.GetUserData(It.IsAny<string>()))
                 .Returns(Task.FromResult(new UserData
                 {
-                    Roles = roles.ToList()
+                    Role = roles
                 }));
 
             var request = CreateHttoRequestWithAuth("Bearer a");
@@ -131,9 +132,9 @@ namespace StoreMap.Backend.Test.Util
         {
             get
             {
-                yield return new TestCaseData(new []{"User"}, UserRole.User, false);
-                yield return new TestCaseData(new []{"User", "Admin"}, UserRole.User, false);
-                yield return new TestCaseData(new []{"User"}, UserRole.AdminModerator, true);
+                yield return new TestCaseData(new []{UserRole.User.GetRefCodes()}, UserRole.User, false);
+                yield return new TestCaseData(new []{UserRole.User.GetRefCodes()}, UserRole.Admin, true);
+                yield return new TestCaseData(new []{UserRole.User.GetRefCodes()}, UserRole.AdminMod, true);
             }
         }
     }

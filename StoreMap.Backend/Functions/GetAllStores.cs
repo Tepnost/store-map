@@ -23,13 +23,12 @@ namespace StoreMap.Backend.Functions
         
         [FunctionName("GetAllStores")]
         public Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "store")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "store")] HttpRequest req)
         {
-            return SafeExecute(() => Run(req));
+            return SafeExecute(() => RunInternal(req));
         }
         
-        private Task<GenericResponse<List<StoreDto>>> Run(HttpRequest req)
+        private Task<GenericResponse<List<StoreDto>>> RunInternal(HttpRequest req)
         {
             return ResolveCommand<GetStoresCommand>().Execute(new EmptyRequest());
         }

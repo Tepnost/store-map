@@ -50,5 +50,11 @@ namespace StoreMap.Backend.Data.Repositories
             var stores = await storesCollection.FindAsync(x => x.Id == id);
             return stores.FirstOrDefault();
         }
+
+        public async Task<bool> DeleteStore(Guid id)
+        {
+            var result = await storesCollection.DeleteOneAsync(x => x.Id == id);
+            return result.DeletedCount > 0;
+        }
     }
 }

@@ -1,36 +1,35 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Logic.Commands;
 using StoreMap.Backend.Logic.Requests;
 using StoreMap.Backend.Logic.ServiceContracts;
 using StoreMap.Backend.Util;
-using StoreMap.Data.Dtos;
+using StoreMap.Data.Enums;
 using StoreMap.Data.Responses;
 
 namespace StoreMap.Backend.Functions
 {
-    public class GetStore : FunctionBase
+    public class DeleteStore : FunctionBase
     {
-        public GetStore(IServiceProvider serviceProvider, IUserService userService) : base(serviceProvider, userService)
+        public DeleteStore(IServiceProvider serviceProvider, IUserService userService) : base(serviceProvider, userService)
         {
         }
         
-        [FunctionName("GetStore")]
+        [FunctionName("DeleteStore")]
         public Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "store/{id:Guid}")] HttpRequest req, Guid id)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "store/{id:Guid}")] HttpRequest req, Guid id)
         {
             return SafeExecute(() => RunInternal(req, id));
         }
         
-        private Task<GenericResponse<StoreDto>> RunInternal(HttpRequest req, Guid id)
+        private async Task<GenericResponse<bool>> RunInternal(HttpRequest req, Guid id)
         {
-            return ResolveCommand<GetStoreCommand>().Execute(new GetByGuidRequest
+            await ValidateTokenAsync(req, UserRole.AdminMod);
+            return await ResolveCommand<DeleteStoreCommand>().Execute(new GetByGuidRequest
             {
                 Id = id
             });

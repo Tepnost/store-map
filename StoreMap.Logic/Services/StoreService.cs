@@ -7,35 +7,41 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Newtonsoft.Json;
 using StoreMap.Data;
 using StoreMap.Data.Dtos;
+using StoreMap.Data.Exceptions;
 using StoreMap.Data.Responses;
 using StoreMap.Logic.Extensions;
 using StoreMap.Logic.ServiceContracts;
 
 namespace StoreMap.Logic.Services
 {
-    public class StoreService : IStoreService
+    public class StoreService : ApiServiceBase, IStoreService
     {
         private readonly HttpClient client;
+        private readonly HttpClient authClient;
         private List<StoreDto> storeCache;
 
-        public StoreService(IHttpClientFactory clientFactory)
+        public StoreService(IHttpClientFactory clientFactory, IMessageService messageService) : base(messageService)
         {
+            authClient = clientFactory.CreateClient("AUTH_API");
             client = clientFactory.CreateClient("API");
             storeCache = new List<StoreDto>();
         }
 
-        public async Task<StoreDto> GetStore(Guid id)
+        public Task<StoreDto> GetStore(Guid id)
         {
-            var store = storeCache.FirstOrDefault(x => x.Id == id);
-            if (store != null)
+            return SafeExecute(async () =>
             {
+                var store = storeCache.FirstOrDefault(x => x.Id == id);
+                if (store != null)
+                {
+                    return store;
+                }
+                
+                var result = await client.GetAsync($"store/{id}");
+                store = await GetContentDataAsObject<StoreDto>(result);
+                storeCache.Add(store);
                 return store;
-            }
-            
-            var result = await client.GetAsync($"store/{id}");
-            store = await result.GetContentDataAsObject<StoreDto>();
-            storeCache.Add(store);
-            return store;
+            });
         }
 
         public Task<List<StoreDto>> GetAllStores()
@@ -43,26 +49,45 @@ namespace StoreMap.Logic.Services
             return SafeExecute(async () =>
             {
                 var result = await client.GetAsync($"store");
-                storeCache = await result.GetContentDataAsObject<List<StoreDto>>();
+                storeCache = await GetContentDataAsObject<List<StoreDto>>(result);
                 return storeCache;
             });
         }
 
-        public async Task<GenericResponse<StoreDto>> SaveStore(StoreDto data)
+        public Task<GenericResponse<StoreDto>> SaveStore(StoreDto data)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(data, Settings.JsonSerializerSettings));
-            var result = await client.PostAsync($"store", content);
-            var response = await result.GetContentAsObject<StoreDto>();
-
-            if (response.Success)
+            return SafeExecute(async () =>
             {
-                SaveInCache(response.Data);
-            }
+                var content = new StringContent(JsonConvert.SerializeObject(data, Settings.JsonSerializerSettings));
+                var result = await authClient.PostAsync($"store", content);
+                var response = await GetContentAsObject<StoreDto>(result);
 
-            return response;
+                if (response.Success)
+                {
+                    SaveInCache(response.Data);
+                }
+
+                HandleResponseMessage(response);
+                return response;
+            });
         }
 
-        private async Task<T> SafeExecute<T>(Func<Task<T>> action)
+        public Task<bool> DeleteStore(Guid id)
+        {
+            return SafeExecute(async () =>
+            {
+                var result = await authClient.DeleteAsync($"store/{id}");
+                var response = await GetContentDataAsObject<bool>(result);
+                if (response)
+                {
+                    RemoveFromCache(id);
+                }
+                
+                return response;
+            });
+        }
+
+        private async Task<T> SafeExecute<T>(Func<Task<T>> action) // TODO: catch these somewhere else, globally
         {
             try
             {
@@ -71,6 +96,11 @@ namespace StoreMap.Logic.Services
             catch (AccessTokenNotAvailableException exception)
             {
                 exception.Redirect();
+                return default;
+            }
+            catch (FailedApiRequestException<T> exception)
+            {
+                HandleResponseMessage(exception.Response);
                 return default;
             }
         }
@@ -85,6 +115,15 @@ namespace StoreMap.Logic.Services
             else
             {
                 storeCache[index] = store;
+            }
+        }
+        
+        private void RemoveFromCache(Guid id)
+        {
+            var index = storeCache.FindIndex(x => x.Id == id);
+            if (index != -1)
+            {
+                storeCache.RemoveAt(index);
             }
         }
     }

@@ -1,9 +1,10 @@
 ﻿@page "/stores"
 @using StoreMap.Logic.ServiceContracts
 @using StoreMap.Data.Dtos
-@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+@using StoreMap.Data.Enums
+@using StoreMap.Data.Extensions
 @inject IStoreService storeService
+@inject NavigationManager navigationManager
 
 @if (stores == null)
 {
@@ -11,30 +12,56 @@
     return;
 }
 
-<AntList DataSource="@stores"
-         Item="@RenderItem"
-         ItemLayout="@AntDirectionVHType.Horizontal">
-</AntList>
+<Table DataSource="@stores" Context="listItem">
+    <Column @bind-Field="@listItem.Name">
+        <NavLink href="@($"stores/{listItem.Id}")">
+            <span class="nav-text">@listItem.Name</span>
+        </NavLink>
+    </Column>
+    <ActionColumn>
+        <AuthorizeView Roles="@UserRole.AdminMod.GetRefCodes()">
+            <Authorized>
+                <Space>
+                    <SpaceItem>
+                        <Button Class="store-list-edit-btn" OnClick="() => Edit(listItem.Id)">
+                            Edit
+                        </Button>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Popconfirm Title="@("Are you sure you want to delete this store?")"
+                                    OnConfirm="() => Delete(listItem.Id)"
+                                    OkText="Yes"
+                                    CancelText="No">
+                            <Button Danger Class="store-list-delete-btn" >
+                                Delete
+                            </Button>
+                        </Popconfirm>
+                    </SpaceItem>
+                </Space>
+            </Authorized>
+        </AuthorizeView>
+    </ActionColumn>
+</Table>
 
 @code {
     private List<StoreDto> stores;
 
-    private RenderFragment RenderItem(StoreDto listItem)
+    private void Edit(Guid id)
     {
-        RenderFragment edit = @<NavLink href="@($"stores/{listItem.Id}/edit")">
-                                  <span class="nav-text">Edit</span>
-                              </NavLink>;
-
-        return @<AntListItem Actions="@(new List<RenderFragment>(new[] { edit }))">
-                   <NavLink href="@($"stores/{listItem.Id}")">
-                       <span class="nav-text">@listItem.Name</span>
-                   </NavLink>
-               </AntListItem>;
+        navigationManager.NavigateTo($"stores/{id}/edit");
     }
 
+    private async void Delete(Guid id)
+    {
+        var result = await storeService.DeleteStore(id);
+        if (!result) return;
+        stores = await storeService.GetAllStores();
+        StateHasChanged();
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         stores = await storeService.GetAllStores();
     }
-
+    
 }

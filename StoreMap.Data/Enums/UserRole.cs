@@ -4,15 +4,15 @@ namespace StoreMap.Data.Enums
 {
     public enum UserRole
     {
-        [ReferenceCode("User")]
+        [ReferenceCode(Constants.UserRole)]
         User,
-        [ReferenceCode("Moderator")]
+        [ReferenceCode(Constants.ModRole)]
         Moderator,
-        [ReferenceCode("Admin")]
+        [ReferenceCode(Constants.AdminRole)]
         Admin,
-        [ReferenceCode(new []{"Admin", "Moderator"})]
-        AdminModerator,
-        [ReferenceCode(new []{"Admin", "Moderator", "User"})]
+        [ReferenceCode(new []{Constants.AdminRole, Constants.ModRole})]
+        AdminMod,
+        [ReferenceCode(new []{Constants.AdminRole, Constants.ModRole, Constants.UserRole})]
         All
     }
 }

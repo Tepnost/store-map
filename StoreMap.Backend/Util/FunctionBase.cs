@@ -65,8 +65,8 @@ namespace StoreMap.Backend.Util
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            var allowedRoles = userRole.GetReferenceCodes();
-            if (user.Roles != null && !allowedRoles.Intersect(user.Roles).Any())
+            var allowedRoles = userRole.GetRefCodesList();
+            if (user.Role != null && !allowedRoles.Contains(user.Role))
             {
                 throw new HttpResponseException(HttpStatusCode.Forbidden);
             }

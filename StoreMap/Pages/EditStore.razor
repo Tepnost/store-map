@@ -1,11 +1,12 @@
 @page "/stores/{id:guid}/edit"
 @using StoreMap.Data.Dtos
 @using StoreMap.Data.Enums
-@using StoreMap.Data.Responses
 @using StoreMap.Logic.ServiceContracts
+@using Microsoft.AspNetCore.Authorization
+@using StoreMap.Data
 @inject IStoreService storeService
-@inject IMessageService message
 @inject NavigationManager navigationManager;
+@attribute [Authorize(Roles = Constants.AdminModRoles)]
 
 @if (Store == null)
 {
@@ -71,22 +72,7 @@
         
         if (response.Success)
         {
-            Store = response.Data;
-            StoreItems = GetStoreItems(Store);
-        }
-        
-        ShowMessage(response);
-    }
-
-    private void ShowMessage(GenericResponse<StoreDto> response)
-    {
-        if (response.Success)
-        {
-            message.Success(response.Message);
-        }
-        else
-        {
-            message.Error(response.Message);
+            navigationManager.NavigateTo("stores");
         }
     }
 }

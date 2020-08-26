@@ -13,5 +13,7 @@ namespace StoreMap.Logic.ServiceContracts
         Task<List<StoreDto>> GetAllStores();
 
         Task<GenericResponse<StoreDto>> SaveStore(StoreDto data);
+
+        Task<bool> DeleteStore(Guid id);
     }
 }
