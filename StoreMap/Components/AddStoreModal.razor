@@ -1,0 +1,64 @@
+﻿@using StoreMap.Data.Dtos
+@using StoreMap.Logic.ServiceContracts
+@inject IStoreService storeService
+
+<Modal Title="@("Add new store")"
+       Visible="@Visible"
+       OnOk="@AddStore"
+       OnCancel="@Cancel"
+       ConfirmLoading="@IsSubmitting"
+       AfterClose="Notify">
+    <Input Placeholder="Store name" @bind-Value="@StoreName" />
+</Modal>
+
+@code {
+    [Parameter] public EventCallback<Guid> OnCreated { get; set; }
+    private bool Visible { get; set; }
+    private string StoreName { get; set; }
+    private bool IsSubmitting { get; set; }
+    private Guid? NewId { get; set; }
+
+    public void Show()
+    {
+        Visible = true;
+        NewId = null;
+        StateHasChanged();
+    }
+
+    private async void AddStore()
+    {
+        IsSubmitting = true;
+        var store = new StoreDto
+        {
+            Name = StoreName
+        };
+
+        var result = await storeService.SaveStore(store);
+        
+        Visible = false;
+        IsSubmitting = false;
+        StateHasChanged();
+        
+        if (result.Success)
+        {
+            NewId = result.Data.Id;
+        }
+    }
+
+    private void Cancel()
+    {
+        StoreName = "";
+        Visible = false;
+    }
+
+    private async Task Notify()
+    {
+        if (NewId == null)
+        {
+            return;
+        }
+        
+        await OnCreated.InvokeAsync(NewId.Value);
+    }
+
+}
