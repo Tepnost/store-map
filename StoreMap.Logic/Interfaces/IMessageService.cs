@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace StoreMap.Logic.ServiceContracts
+namespace StoreMap.Logic.Interfaces
 {
     public interface IMessageService
     {

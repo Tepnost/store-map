@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AntDesign;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 
 namespace StoreMap.Logic.Services
 {

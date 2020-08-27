@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using StoreMap.Data.Dtos;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 
 namespace StoreMap.Logic.Services
 {

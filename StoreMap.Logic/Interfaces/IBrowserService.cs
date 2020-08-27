@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using StoreMap.Data.Dtos;
 
-namespace StoreMap.Logic.ServiceContracts
+namespace StoreMap.Logic.Interfaces
 {
     public interface IBrowserService
     {

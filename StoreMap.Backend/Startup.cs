@@ -1,16 +1,18 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using StoreMap.Backend.Data.Interfaces;
 using StoreMap.Backend.Data.Repositories;
 using StoreMap.Backend.Extensions;
 using StoreMap.Backend.Logic.Base;
-using StoreMap.Backend.Logic.ServiceContracts;
+using StoreMap.Backend.Logic.Interfaces;
 using StoreMap.Backend.Logic.Services;
 
 [assembly: FunctionsStartup(typeof(StoreMap.Backend.Startup))]
 
 namespace StoreMap.Backend
 {
+    [ExcludeFromCodeCoverage]
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)

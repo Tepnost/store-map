@@ -7,8 +7,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using StoreMap.Backend.Logic.Commands;
+using StoreMap.Backend.Logic.Interfaces;
 using StoreMap.Backend.Logic.Requests;
-using StoreMap.Backend.Logic.ServiceContracts;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Responses;
@@ -30,7 +30,10 @@ namespace StoreMap.Backend.Functions
         
         private Task<GenericResponse<List<StoreDto>>> RunInternal(HttpRequest req)
         {
-            return ResolveCommand<GetStoresCommand>().Execute(new EmptyRequest());
+            return ResolveCommand<GetStoresCommand>().Execute(new SearchRequest
+            {
+                SearchTerm = req.Query["searchTerm"]
+            });
         }
     }
 }

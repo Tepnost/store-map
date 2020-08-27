@@ -6,7 +6,7 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoreMap.Backend.Logic.Base;
-using StoreMap.Backend.Logic.ServiceContracts;
+using StoreMap.Backend.Logic.Interfaces;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Enums;
 using StoreMap.Data.Extensions;

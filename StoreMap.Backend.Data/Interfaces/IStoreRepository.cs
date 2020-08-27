@@ -8,12 +8,16 @@ namespace StoreMap.Backend.Data.Interfaces
 {
     public interface IStoreRepository
     {
-        Task<List<Store>> GetAllStores();
+        Task<List<Store>> GetAll(string searchTerm);
 
-        Task<Store> SaveStore(StoreDto dto);
+        Task<List<Store>> GetAll();
 
-        Task<Store> FindStore(Guid id);
+        Task<Store> Insert(Store store);
+        
+        Task<Store> Update(Store store);
 
-        Task<bool> DeleteStore(Guid id);
+        Task<Store> FindOne(Guid id);
+
+        Task<bool> Delete(Guid id);
     }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/stores/{id:guid}"
 @using StoreMap.Data.Dtos
-@using StoreMap.Logic.ServiceContracts
+@using StoreMap.Logic.Interfaces
 @inject IStoreService storeService
 
 @if (store == null)

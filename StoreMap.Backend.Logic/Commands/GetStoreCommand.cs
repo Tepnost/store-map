@@ -18,7 +18,7 @@ namespace StoreMap.Backend.Logic.Commands
 
         protected override async Task<GenericResponse<StoreDto>> ExecuteCore(GetByGuidRequest request)
         {
-            var stores = await storeRepository.FindStore(request.Id);
+            var stores = await storeRepository.FindOne(request.Id);
             
             return GenericResponse<StoreDto>.AsSuccess(stores.ToDto());
         }

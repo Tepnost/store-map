@@ -1,0 +1,18 @@
+﻿<Search EnterButton="true"
+        OnSearch="HandleSearch"
+        OnPressEnter="HandleSearch"
+        @bind-Value="searchTerm" 
+        @attributes=OtherAttributes />
+
+@code {
+    [Parameter] public EventCallback<string> OnSearch { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> OtherAttributes { get; set; }
+    private string searchTerm { get; set; }
+
+    private void HandleSearch()
+    {
+        OnSearch.InvokeAsync(searchTerm);
+    }
+
+}

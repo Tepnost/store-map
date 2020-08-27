@@ -1,9 +1,9 @@
 @page "/stores/{id:guid}/edit"
 @using StoreMap.Data.Dtos
 @using StoreMap.Data.Enums
-@using StoreMap.Logic.ServiceContracts
 @using Microsoft.AspNetCore.Authorization
 @using StoreMap.Data
+@using StoreMap.Logic.Interfaces
 @inject IStoreService storeService
 @inject NavigationManager navigationManager;
 @attribute [Authorize(Roles = Constants.AdminModRoles)]

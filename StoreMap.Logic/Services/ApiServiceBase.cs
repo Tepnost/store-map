@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using StoreMap.Data;
 using StoreMap.Data.Exceptions;
 using StoreMap.Data.Responses;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 
 namespace StoreMap.Logic.Services
 {

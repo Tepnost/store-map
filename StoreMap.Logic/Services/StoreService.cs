@@ -10,7 +10,7 @@ using StoreMap.Data.Dtos;
 using StoreMap.Data.Exceptions;
 using StoreMap.Data.Responses;
 using StoreMap.Logic.Extensions;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 
 namespace StoreMap.Logic.Services
 {
@@ -44,11 +44,12 @@ namespace StoreMap.Logic.Services
             });
         }
 
-        public Task<List<StoreDto>> GetAllStores()
+        public Task<List<StoreDto>> GetAllStores(string searchTerm = null)
         {
             return SafeExecute(async () =>
             {
-                var result = await client.GetAsync($"store");
+                var query = !string.IsNullOrEmpty(searchTerm) ? $"?searchTerm={searchTerm}" : string.Empty;
+                var result = await client.GetAsync($"store{query}");
                 storeCache = await GetContentDataAsObject<List<StoreDto>>(result);
                 return storeCache;
             });

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using Moq;
 using NUnit.Framework;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 using TestContext = Bunit.TestContext;
 
 namespace StoreMap.Test.Base

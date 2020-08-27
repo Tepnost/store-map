@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace StoreMap.Backend.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class BuilderExtensions
     {
         public static void RegisterAllImplenetations(this IFunctionsHostBuilder builder, Type baseType)

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using StoreMap.Backend.Data.Entities;
 using StoreMap.Backend.Data.Interfaces;
-using StoreMap.Data.Dtos;
 
 namespace StoreMap.Backend.Data.Repositories
 {
-    public class StoreRepository : IStoreRepository
+    [ExcludeFromCodeCoverage]
+    public class StoreRepository : IStoreRepository, ICrudRepository<Store>
     {
         private readonly IMongoCollection<Store> storesCollection;
         
@@ -19,39 +21,43 @@ namespace StoreMap.Backend.Data.Repositories
             storesCollection = database.GetCollection<Store>("stores");
         }
 
-        public async Task<List<Store>> GetAllStores()
+        public async Task<List<Store>> GetAll(string searchTerm)
         {
-            var stores = await storesCollection.FindAsync(x => true);
+            var stores = await storesCollection
+                .FindAsync(x => x.Name.ToLowerInvariant().StartsWith(searchTerm));
 
             return stores.ToList();
         }
 
-        public async Task<Store> SaveStore(StoreDto dto)
+        public async Task<Store> Update(Store store)
         {
-            var store = Store.FromDto(dto);
+            await storesCollection.FindOneAndUpdateAsync(
+                x => x.Id == store.Id,
+                new ObjectUpdateDefinition<Store>(store));
+            
+            return store;
+        }
 
-            if (store.Id == default)
-            {
-                store.Id = Guid.NewGuid();
-                await storesCollection.InsertOneAsync(store);
-            }
-            else
-            {
-                await storesCollection.FindOneAndUpdateAsync(
-                    x => x.Id == store.Id,
-                    new ObjectUpdateDefinition<Store>(store));
-            }
+        public async Task<List<Store>> GetAll()
+        {
+            var stores = await storesCollection.FindAsync(x => true);
+            return stores.ToList();
+        }
+
+        public async Task<Store> Insert(Store store)
+        {
+            await storesCollection.InsertOneAsync(store);
 
             return store;
         }
 
-        public async Task<Store> FindStore(Guid id)
+        public async Task<Store> FindOne(Guid id)
         {
             var stores = await storesCollection.FindAsync(x => x.Id == id);
             return stores.FirstOrDefault();
         }
 
-        public async Task<bool> DeleteStore(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
             var result = await storesCollection.DeleteOneAsync(x => x.Id == id);
             return result.DeletedCount > 0;

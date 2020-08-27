@@ -1,13 +1,15 @@
-﻿using StoreMap.Backend.Logic.Base;
+﻿using System.Threading.Tasks;
+using StoreMap.Backend.Logic.Base;
 using StoreMap.Data.Responses;
+using Task = System.Threading.Tasks.Task;
 
 namespace StoreMap.Backend.Test.Mocks
 {
-    public class MockCommand : CommandBase<object, object>
+    public class MockCommand : AsyncCommandBase<object, object>
     {
-        protected override GenericResponse<object> ExecuteCore(object request)
+        protected override Task<GenericResponse<object>> ExecuteCore(object request)
         {
-            return new GenericResponse<object>();
+            return Task.FromResult(new GenericResponse<object>());
         }
     }
 }

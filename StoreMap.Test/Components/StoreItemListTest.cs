@@ -9,7 +9,7 @@ using NUnit.Framework;
 using StoreMap.Components;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Enums;
-using StoreMap.Logic.ServiceContracts;
+using StoreMap.Logic.Interfaces;
 using StoreMap.Pages;
 using StoreMap.Test.Base;
 

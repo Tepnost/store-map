@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using StoreMap.Backend.Extensions;
 using StoreMap.Backend.Logic.Commands;
-using StoreMap.Backend.Logic.ServiceContracts;
+using StoreMap.Backend.Logic.Interfaces;
 using StoreMap.Backend.Util;
 using StoreMap.Data.Dtos;
 using StoreMap.Data.Enums;

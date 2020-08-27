@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using StoreMap.Backend.Logic.ServiceContracts;
+using StoreMap.Backend.Logic.Interfaces;
 using StoreMap.Data.Dtos;
 
 namespace StoreMap.Backend.Logic.Services

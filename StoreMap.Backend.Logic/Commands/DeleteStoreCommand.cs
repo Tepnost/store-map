@@ -17,7 +17,7 @@ namespace StoreMap.Backend.Logic.Commands
         
         protected override async Task<GenericResponse<bool>> ExecuteCore(GetByGuidRequest request)
         {
-            var success = await storeRepository.DeleteStore(request.Id);
+            var success = await storeRepository.Delete(request.Id);
             
             return new GenericResponse<bool>
             {
