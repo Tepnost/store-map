@@ -9,6 +9,7 @@
 
 <MapView id="map-drawing"
          Store="@Store"
+         StoreItems="Store.StoreItems.Select(x => new StoreItemExtendedDto(x)).ToList()"
          @onclick="@HandleClick"
          @onmousemove="@UpdateDrawingShape">
     

@@ -6,9 +6,9 @@
         <StoreShape Data="@obj" @key="obj"></StoreShape>
     }
 
-    @foreach (var item in Store.StoreItems)
+    @foreach (var item in StoreItems)
     {
-        <StoreItem Data="@item"></StoreItem>
+        <StoreItem Data="@item" Focused="item.IsFocused"></StoreItem>
     }
 
     @ChildContent
@@ -26,9 +26,14 @@
 
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
-    
     [Parameter] public StoreDto Store { get; set; }
-    
+    [Parameter] public List<StoreItemExtendedDto> StoreItems { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> OtherAttributes { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        StoreItems ??= Store.StoreItems.Select(x => new StoreItemExtendedDto(x)).ToList();
+    }
+
 }

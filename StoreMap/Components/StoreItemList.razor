@@ -1,8 +1,9 @@
 ﻿@using StoreMap.Data.Dtos
 @using StoreMap.Data.Enums
+@using StoreMap.Data.Events
 
 <div class="store-item-list">
-    <Table DataSource="@EditStore.StoreItems">
+    <Table DataSource="@StoreItems">
         <Column @bind-Field="@context.Name">
             @if (context.IsEditing)
             {
@@ -13,23 +14,31 @@
                 <span>@context.Name</span>
             }
         </Column>
-        <Column @bind-Field="@context.X"></Column>
-        <Column @bind-Field="@context.Y"></Column>
-        <ActionColumn>
-            <Space>
-                @if (context.IsEditing)
-                {
-                    <SpaceItem><Button Class="store-item-list-save-btn" OnClick="() => Save(context.Id)">Save</Button></SpaceItem>
-                    <SpaceItem><Button Class="store-item-list-cancel-btn" OnClick="() => Cancel(context.Id)">Cancel</Button></SpaceItem>
-                }
-                else
-                {
-                    <SpaceItem><Button Class="store-item-list-edit-btn" OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
-                    <SpaceItem><Button Class="store-item-list-move-btn" OnClick="() => Move(context.Id)">Move</Button></SpaceItem>
-                    <SpaceItem><Button Class="store-item-list-delete-btn" Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
-                }
-            </Space>
-        </ActionColumn>
+        @if (!CanEdit)
+        {
+            <Column Title="Mark on map" Field="@context.IsFocused">
+                <Switch @bind-Value="@context.IsFocused" OnChange="@(async (isFocused) => await FocusItem(context.Id, isFocused))"></Switch>
+            </Column>
+        }
+        else {
+            <Column @bind-Field="@context.X"></Column>
+            <Column @bind-Field="@context.Y"></Column>
+            <ActionColumn>
+                <Space>
+                    @if (context.IsEditing)
+                    {
+                        <SpaceItem><Button Class="store-item-list-save-btn" OnClick="() => Save(context.Id)">Save</Button></SpaceItem>
+                        <SpaceItem><Button Class="store-item-list-cancel-btn" OnClick="() => Cancel(context.Id)">Cancel</Button></SpaceItem>
+                    }
+                    else
+                    {
+                        <SpaceItem><Button Class="store-item-list-edit-btn" OnClick="() => Edit(context.Id)">Edit</Button></SpaceItem>
+                        <SpaceItem><Button Class="store-item-list-move-btn" OnClick="() => Move(context.Id)">Move</Button></SpaceItem>
+                        <SpaceItem><Button Class="store-item-list-delete-btn" Danger OnClick="() => Delete(context.Id)">Delete</Button></SpaceItem>
+                    }
+                </Space>
+            </ActionColumn>
+        }
     </Table>
 </div>
 
@@ -43,19 +52,26 @@
 
 @code{
     [CascadingParameter] public EditStore EditStore { get; set; }
-    private StoreDto Store => EditStore.Store;
+    [Parameter] public List<StoreItemExtendedDto> StoreItems { get; set; }
+    [Parameter] public bool CanEdit { get; set; }
+    [Parameter] public EventCallback<ChangeFocusEvent> OnFocus { get; set; }
+    
+    protected override void OnParametersSet()
+    {
+        StoreItems ??= EditStore.StoreItems;
+    }
 
-    private StoreItemExtendedDto GetItem(Guid id) => EditStore.StoreItems.First(x => x.Id == id);
+    private StoreItemExtendedDto GetItem(Guid id) => StoreItems.First(x => x.Id == id);
 
     private void Delete(Guid id)
     {
-        var index = EditStore.StoreItems.FindIndex(x => x.Id == id);
+        var index = StoreItems.FindIndex(x => x.Id == id);
         if (index == -1)
         {
             return;
         }
         
-        EditStore.StoreItems.RemoveAt(index);
+        StoreItems.RemoveAt(index);
         EditStore.Update();
     }
 
@@ -90,6 +106,17 @@
         {
             Delete(id);
         }
+    }
+
+    private async Task FocusItem(Guid id, bool isFocused)
+    {
+        var item = GetItem(id);
+        item.IsFocused = isFocused;
+        await OnFocus.InvokeAsync(new ChangeFocusEvent
+        {
+            Id = id,
+            IsFocused = isFocused
+        });
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿@page "/stores/{id:guid}"
 @using StoreMap.Data.Dtos
+@using StoreMap.Data.Events
 @using StoreMap.Logic.Interfaces
 @inject IStoreService storeService
 
@@ -9,16 +10,40 @@
     return;
 }
 
-<MapView Store="@store"/>
+<MapView Store="store" StoreItems="storeItems"/>
+<Divider />
+<SearchBar style="margin-bottom: 20px" Placeholder="Search by name" OnSearch="Search"/>
+<StoreItemList StoreItems="storeItems" OnFocus="FocusItem" CanEdit="false"/>
 
 @code {
     private StoreDto store;
+    private List<StoreItemExtendedDto> storeItems;
 
     [Parameter] public Guid Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         store = await storeService.GetStore(Id);
+        SetStoreItems();
     }
 
+    private void SetStoreItems(string searchTerm = "")
+    {
+        searchTerm = searchTerm.ToLower();
+        storeItems = store.StoreItems
+            .Where(x => x.Name.ToLower().StartsWith(searchTerm))
+            .Select(x => new StoreItemExtendedDto(x))
+            .ToList();
+    }
+    
+    private void Search(string searchTerm)
+    {
+        SetStoreItems(searchTerm);
+    }
+
+    private void FocusItem(ChangeFocusEvent e)
+    {
+        storeItems.First(x => x.Id == e.Id).IsFocused = e.IsFocused;
+        store.StoreItems = storeItems.Cast<StoreItemDto>().ToList();
+    }
 }

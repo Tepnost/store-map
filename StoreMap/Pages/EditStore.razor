@@ -17,7 +17,7 @@
 <CascadingValue Value="this">
     <MapEdit />
     <Divider />
-    <StoreItemList />
+    <StoreItemList CanEdit="true" />
     
     <Button Class="save-store-btn" Type="primary" Size="large" Block @onclick="@Save" Disabled="@savingInProgress">
         @if (savingInProgress)
