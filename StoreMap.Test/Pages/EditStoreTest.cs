@@ -82,7 +82,6 @@ namespace StoreMap.Test.Pages
         public void EditStore_Save_ShouldSaveAndHandleResponse()
         {
             storeServiceMock.Invocations.Clear();
-            messageMock.Invocations.Clear();
             
             var store = MockGetStore();
             var response = new GenericResponse<StoreDto>
@@ -101,30 +100,6 @@ namespace StoreMap.Test.Pages
             component.Find(".save-store-btn").Click();
             
             storeServiceMock.Verify(x => x.SaveStore(It.Is<StoreDto>(y => y.Id == store.Id)), Times.Once);
-            messageMock.Verify(x => x.Success(response.Message), Times.Once);
-        }
-
-        [Test]
-        public void EditStore_Save_ShouldHandleUnsuccessfullResponse()
-        {
-            messageMock.Invocations.Clear();
-            
-            var store = MockGetStore();
-            var response = new GenericResponse<StoreDto>
-            {
-                Success = false,
-                Message = "Test message"
-            };
-            
-            storeServiceMock
-                .Setup(x => x.SaveStore(It.IsAny<StoreDto>()))
-                .Returns(Task.FromResult(response));
-            
-            var component = RenderComponent<EditStore>();
-            
-            component.Find(".save-store-btn").Click();
-            
-            messageMock.Verify(x => x.Error(response.Message), Times.Once);
         }
 
         [Test]

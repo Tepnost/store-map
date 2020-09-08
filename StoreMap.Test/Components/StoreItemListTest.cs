@@ -46,7 +46,9 @@ namespace StoreMap.Test.Components
                 editStore.StoreItems.Add(new StoreItemExtendedDto());
             }
             
-            return RenderComponent<StoreItemList>(x => x.Add(editStore));
+            return RenderComponent<StoreItemList>(x => x
+                .Add(editStore)
+                .Add(y => y.CanEdit, true));
         }
 
         [Test]
