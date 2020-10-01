@@ -1,7 +1,7 @@
 # Store Map
 
 ## About
-Are you looking for something in the store but can't find it? This is the app you need!
+Aree you looking for something in the store but can't find it? This is the app you need!
 
 ### Main concept
 1. Search for items in the store that you're in
